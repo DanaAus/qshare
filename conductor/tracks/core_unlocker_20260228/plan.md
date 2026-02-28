@@ -1,9 +1,9 @@
 # Implementation Plan: core_unlocker_20260228
 
 ## Phase 1: Scaffolding
-- [ ] Task: Project Initialization
-    - [ ] Create Cargo.toml with dependencies (windows-rs, clap, inquire, etc.)
-    - [ ] Create basic src/main.rs and directory structure
+- [x] Task: Project Initialization [934da7a]
+    - [x] Create Cargo.toml with dependencies (windows-rs, clap, inquire, etc.)
+    - [x] Create basic src/main.rs and directory structure
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: Lock Detection Logic
