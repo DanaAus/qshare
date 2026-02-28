@@ -7,9 +7,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md) [2cb276d]
 
 ## Phase 2: Lock Detection Logic
-- [ ] Task: Win32 API Integration
-    - [ ] Implement wrapper for Restart Manager API to detect file locks
-    - [ ] Implement recursive file/folder scanner
+- [x] Task: Win32 API Integration [e9f5cb4]
+    - [x] Implement wrapper for Restart Manager API to detect file locks
+    - [x] Implement recursive file/folder scanner
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: CLI & Interaction
