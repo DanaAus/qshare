@@ -1,0 +1,1 @@
+Task: Create helper functions for progress bar initialization in internal/ui/progress.go\nSummary: Added NewProgressBar and NewIndeterminateProgressBar functions.\nFiles: internal/ui/progress.go, internal/ui/progress_test.go\nWhy: Centralized UI logic for progress bars.
