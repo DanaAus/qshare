@@ -6,8 +6,8 @@
 - [x] Task: Conductor - User Manual Verification 'Setup and Infrastructure' (Protocol in workflow.md) [72be18b]
 
 ## Phase 2: Implementation in Send Mode
-- [~] Task: Write Tests for progress bar integration in internal/handlers/send.go
-- [ ] Task: Implement progress bar in StartSendServer for single files
+- [x] Task: Write Tests for progress bar integration in internal/handlers/send.go [4a640db]
+- [~] Task: Implement progress bar in StartSendServer for single files
 - [ ] Task: Implement progress bar in StartSendServer for directory (ZIP) transfers
 - [ ] Task: Conductor - User Manual Verification 'Implementation in Send Mode' (Protocol in workflow.md)
 
