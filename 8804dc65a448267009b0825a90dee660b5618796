@@ -1,0 +1,1 @@
+Task: Ensure progress bar cleanup on server shutdown or transfer completion\nSummary: Added defer bar.Finish() to send and receive handlers.\nFiles: internal/handlers/send.go, internal/handlers/receive.go\nWhy: Prevent progress bar artifacts in terminal.
