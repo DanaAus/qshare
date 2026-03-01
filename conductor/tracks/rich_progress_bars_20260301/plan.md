@@ -11,12 +11,12 @@
 - [x] Task: Implement progress bar in StartSendServer for directory (ZIP) transfers [f04193c]
 - [x] Task: Conductor - User Manual Verification 'Implementation in Send Mode' (Protocol in workflow.md) [0bf234a]
 
-## Phase 3: Implementation in Receive Mode
+## Phase 3: Implementation in Receive Mode [checkpoint: cedbba5]
 - [x] Task: Write Tests for progress bar integration in internal/handlers/receive.go [2eda7d2]
 - [x] Task: Implement progress bar in StartReceiveServer for received files [384bf63]
-- [~] Task: Conductor - User Manual Verification 'Implementation in Receive Mode' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Implementation in Receive Mode' (Protocol in workflow.md) [cedbba5]
 
 ## Phase 4: Final Polishing and Verification
-- [ ] Task: Ensure progress bar cleanup on server shutdown or transfer completion
+- [~] Task: Ensure progress bar cleanup on server shutdown or transfer completion
 - [ ] Task: Final end-to-end testing with large files
 - [ ] Task: Conductor - User Manual Verification 'Final Polishing and Verification' (Protocol in workflow.md)
