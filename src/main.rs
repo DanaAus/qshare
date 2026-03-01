@@ -19,13 +19,16 @@ fn main() {
 
     println!("{} Scanning for locks on {:?}...", "Info:".blue().bold(), cli.path);
 
+    let start_time = std::time::Instant::now();
     let pids = locker::get_locking_processes(&cli.path);
+    let duration = start_time.elapsed();
     
     if pids.is_empty() {
-        println!("{}", "No locking processes found.".green().bold());
+        println!("{} (took {:?})", "No locking processes found.".green().bold(), duration);
         return;
     }
 
+    println!("{} Found {} locking processes in {:?}.", "Info:".blue().bold(), pids.len(), duration);
     let details = ui::get_process_details(&pids);
     ui::print_process_table(&details);
 

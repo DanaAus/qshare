@@ -33,11 +33,10 @@ pub fn print_process_table(details: &[ProcessDetails]) {
     }
 
     println!("\n{}", "Locking Processes Found:".yellow().bold());
-    println!("{:<8} {:<25}", "PID".bold(), "Process Name".bold());
-    println!("{}", "-".repeat(35));
+    println!("{:<8} {:<25}", "PID".bold().underline(), "Process Name".bold().underline());
 
     for detail in details {
-        println!("{:<8} {:<25}", detail.pid, detail.name.cyan());
+        println!("{:<8} {:<25}", detail.pid.to_string().bright_white(), detail.name.cyan());
     }
     println!();
 }
