@@ -12,9 +12,9 @@
 - [x] Task: Conductor - User Manual Verification 'Implementation in Send Mode' (Protocol in workflow.md) [0bf234a]
 
 ## Phase 3: Implementation in Receive Mode
-- [x] Task: Write Tests for progress bar integration in internal/handlers/receive.go [HASH_PLACEHOLDER]
-- [~] Task: Implement progress bar in StartReceiveServer for received files
-- [ ] Task: Conductor - User Manual Verification 'Implementation in Receive Mode' (Protocol in workflow.md)
+- [x] Task: Write Tests for progress bar integration in internal/handlers/receive.go [2eda7d2]
+- [x] Task: Implement progress bar in StartReceiveServer for received files [384bf63]
+- [~] Task: Conductor - User Manual Verification 'Implementation in Receive Mode' (Protocol in workflow.md)
 
 ## Phase 4: Final Polishing and Verification
 - [ ] Task: Ensure progress bar cleanup on server shutdown or transfer completion
