@@ -2,8 +2,8 @@
 
 ## Phase 1: Setup and Infrastructure
 - [x] Task: Add github.com/schollz/progressbar/v3 to go.mod [dacc4b9]
-- [~] Task: Create helper functions for progress bar initialization in internal/ui/progress.go
-- [ ] Task: Conductor - User Manual Verification 'Setup and Infrastructure' (Protocol in workflow.md)
+- [x] Task: Create helper functions for progress bar initialization in internal/ui/progress.go [87ee685]
+- [~] Task: Conductor - User Manual Verification 'Setup and Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Implementation in Send Mode
 - [ ] Task: Write Tests for progress bar integration in internal/handlers/send.go
