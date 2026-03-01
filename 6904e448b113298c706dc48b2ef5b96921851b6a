@@ -1,0 +1,9 @@
+Task: Phase 5: Finalization
+
+Summary: Added performance measurement for lock scanning and refined the ANSI color styling for better readability.
+
+Modified Files:
+- src/ui.rs (Enhanced table styling)
+- src/main.rs (Added scan duration output)
+
+Why: This provides feedback to the user on tool performance and improves the overall visual experience in the terminal.
