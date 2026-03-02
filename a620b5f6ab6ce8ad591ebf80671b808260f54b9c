@@ -1,0 +1,6 @@
+Task: Refine UI and Error Handling
+Summary: Added descriptions to interactive prompts and implemented graceful handling of huh.ErrUserAborted in both internal/ui/interactive.go and cmd/root.go.
+Files:
+- internal/ui/interactive.go
+- cmd/root.go
+Why: To improve the user experience by providing more context in the prompts and ensuring the application exits cleanly when the user cancels.
