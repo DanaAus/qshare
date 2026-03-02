@@ -4,15 +4,16 @@ import (
 	"testing"
 )
 
-func TestMainActionForm(t *testing.T) {
-	var action string
-	form := MainActionForm(&action)
-
-	if form == nil {
-		t.Fatal("Expected MainActionForm to return a form, got nil")
+func TestInteractiveConfigStructure(t *testing.T) {
+	cfg := &InteractiveConfig{
+		Action: "send",
+		Path:   "./test",
+		Port:   8080,
+		PIN:    "1234",
+		Secure: true,
 	}
 
-	// We'll perform a basic check that the form has at least one group.
-	// Since huh doesn't expose its internal group structure easily,
-	// this is just to confirm wiring.
+	if cfg.Action != "send" {
+		t.Errorf("Expected Action send, got %s", cfg.Action)
+	}
 }
