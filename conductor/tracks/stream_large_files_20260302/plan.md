@@ -22,10 +22,10 @@ This plan focuses on ensuring that file transfers in QShare are memory-efficient
     - [x] Add detailed logging for different types of stream failures (connection reset, file read error).
 - [x] **Task: Conductor - User Manual Verification 'Streaming Optimization and Robustness' (Protocol in workflow.md)**
 
-## Phase 3: Concurrency and Performance Testing
-- [ ] **Task: Implement concurrent transfer tests**
-    - [ ] Create a test case that initiates 3+ concurrent large file transfers.
-    - [ ] Assert that total memory usage of the process remains below 20MB.
-- [ ] **Task: Verify ZIP streaming for directories**
-    - [ ] Ensure that `ServeDirWithProgress` also maintains a low memory footprint by streaming individual files into the zip writer.
-- [ ] **Task: Conductor - User Manual Verification 'Concurrency and Performance Testing' (Protocol in workflow.md)**
+## Phase 3: Concurrency and Performance Testing [checkpoint: a127ad9]
+- [x] **Task: Implement concurrent transfer tests**
+    - [x] Create a test case that initiates 3+ concurrent large file transfers.
+    - [x] Assert that total memory usage of the process remains below 20MB.
+- [x] **Task: Verify ZIP streaming for directories**
+    - [x] Ensure that `ServeDirWithProgress` also maintains a low memory footprint by streaming individual files into the zip writer.
+- [x] **Task: Conductor - User Manual Verification 'Concurrency and Performance Testing' (Protocol in workflow.md)**
