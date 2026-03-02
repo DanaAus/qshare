@@ -9,8 +9,8 @@ This plan outlines the steps for implementing an interactive TUI for QShare usin
 - [x] **Task: Create a separate 'interactive' package for UI logic** 364c908
     - [x] Create `internal/ui/interactive.go` (or a similar location) to isolate the `huh` forms.
     - [x] Write a test in `internal/ui/interactive_test.go` to verify the form structure (mocking input if possible).
-- [ ] **Task: Prototype the 'Primary Action' prompt**
-    - [ ] Implement a `huh` Select field for Send, Receive, and Sync.
+- [x] **Task: Prototype the 'Primary Action' prompt** 364c908
+    - [x] Implement a `huh` Select field for Send, Receive, and Sync.
 - [ ] **Task: Conductor - User Manual Verification 'Setup and Prototyping' (Protocol in workflow.md)**
 
 ## Phase 2: Core Feature Implementation
