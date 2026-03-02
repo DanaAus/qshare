@@ -1,0 +1,7 @@
+Task: Update Tech Stack and Install Dependencies
+Summary: Added charmbracelet/huh to tech-stack.md and ran go get to install it as a project dependency.
+Files:
+- conductor/tech-stack.md
+- go.mod
+- go.sum
+Why: To provide a slick interactive CLI experience using a modern TUI library.
