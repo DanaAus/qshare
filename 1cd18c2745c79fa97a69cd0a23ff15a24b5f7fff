@@ -1,0 +1,6 @@
+Task: Implement feature-specific configuration forms
+Summary: Updated RunInteractivePrompts to include sub-forms for Send, Receive, and Sync with input validation for Path, Port, and PIN.
+Files:
+- internal/ui/interactive.go
+- internal/ui/interactive_test.go
+Why: To provide a complete interactive setup for each primary action in QShare.
