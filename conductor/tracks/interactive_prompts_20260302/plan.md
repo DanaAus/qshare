@@ -28,6 +28,6 @@ This plan outlines the steps for implementing an interactive TUI for QShare usin
 - [x] **Task: Refine UI and Error Handling** a620b5f
     - [x] Improve the visual presentation of the prompts.
     - [x] Ensure that cancelling the interactive session (e.g., Ctrl+C) exits gracefully.
-- [ ] **Task: Final verification of CLI flag parity**
-    - [ ] Ensure that running the CLI with traditional flags still works as expected.
+- [x] **Task: Final verification of CLI flag parity** c64c5b1
+    - [x] Ensure that running the CLI with traditional flags still works as expected.
 - [ ] **Task: Conductor - User Manual Verification 'Refinement and Polishing' (Protocol in workflow.md)**
