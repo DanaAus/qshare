@@ -1,0 +1,9 @@
+Task: Integrate into Root Command & Map Interactive Inputs to Command Logic
+Summary: Modified cmd/root.go to trigger RunInteractivePrompts when no arguments are provided. Updated handlers to accept Options and mapped interactive inputs to them.
+Files:
+- cmd/root.go
+- cmd/send.go
+- cmd/receive.go
+- internal/handlers/send.go
+- internal/handlers/receive.go
+Why: To allow users to use QShare interactively without remembering flags, and to unify the command logic between CLI and TUI modes.
