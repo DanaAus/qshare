@@ -11,7 +11,6 @@ import (
 
 	"qshare/internal/network"
 	"qshare/internal/server"
-	"qshare/internal/ui"
 
 	"github.com/mdp/qrterminal/v3"
 	"github.com/schollz/progressbar/v3"
@@ -19,7 +18,7 @@ import (
 
 // StartSendServer initializes the ephemeral server and handles file sending.
 func StartSendServer(targetPath string, secure bool) error {
-	// 1. Check if path exists and is a directory
+	// 1. Check if path exists
 	info, err := os.Stat(targetPath)
 	if err != nil {
 		return fmt.Errorf("target path not found: %w", err)
@@ -64,16 +63,17 @@ func StartSendServer(targetPath string, secure bool) error {
 			return
 		}
 
-		// Security: Prevent path traversal (handled implicitly out of box but good to log)
-
 		fmt.Printf("\n[Server] Connection established from %s\n", r.RemoteAddr)
 
+		var serveErr error
 		if info.IsDir() {
-			// Stream folder as ZIP with progress spinner
-			ServeDirWithProgress(w, r, targetPath)
+			serveErr = ServeDirWithProgress(w, r, targetPath)
 		} else {
-			// Serve a single file with progress bar
-			ServeFileWithProgress(w, r, targetPath)
+			serveErr = ServeFileWithProgress(w, r, targetPath)
+		}
+
+		if serveErr != nil {
+			fmt.Printf("[Error] Failed to serve content: %v\n", serveErr)
 		}
 
 		// Shutdown after transfer
@@ -89,61 +89,58 @@ func StartSendServer(targetPath string, secure bool) error {
 	return srv.Start(5 * time.Minute)
 }
 
-type progressResponseWriter struct {
-	http.ResponseWriter
-	bar *progressbar.ProgressBar
-}
-
-func (w *progressResponseWriter) Write(p []byte) (int, error) {
-	n, err := w.ResponseWriter.Write(p)
-	w.bar.Add(n)
-	return n, err
-}
-
-// ServeFileWithProgress serves a single file with a progress bar.
-func ServeFileWithProgress(w http.ResponseWriter, r *http.Request, filePath string) {
+// ServeFileWithProgress serves a single file to the client with a real-time
+// progress bar (bytes sent, speed, ETA) shown on the host terminal.
+func ServeFileWithProgress(w http.ResponseWriter, r *http.Request, filePath string) error {
 	info, err := os.Stat(filePath)
 	if err != nil {
-		http.NotFound(w, r)
-		return
+		http.Error(w, "File not found", http.StatusNotFound)
+		return fmt.Errorf("stat %q: %w", filePath, err)
 	}
 
-	bar := ui.NewProgressBar(info.Size(), "Sending "+info.Name())
-	defer bar.Finish()
-	pw := &progressResponseWriter{
-		ResponseWriter: w,
-		bar:            bar,
+	file, err := os.Open(filePath)
+	if err != nil {
+		http.Error(w, "File not found", http.StatusNotFound)
+		return fmt.Errorf("open %q: %w", filePath, err)
 	}
+	defer file.Close()
+
+	bar := progressbar.DefaultBytes(info.Size(), "Sending file")
 
 	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, info.Name()))
-	http.ServeFile(pw, r, filePath)
+	writer := io.MultiWriter(w, bar)
+	if _, err := io.Copy(writer, file); err != nil {
+		return fmt.Errorf("copy: %w", err)
+	}
+	fmt.Println() // newline after bar
+	return nil
 }
 
-// ServeDirWithProgress serves a directory as a ZIP stream with a progress spinner.
-func ServeDirWithProgress(w http.ResponseWriter, r *http.Request, dirPath string) {
+// ServeDirWithProgress streams a directory as a ZIP archive to the client, showing
+// an indeterminate spinner progress bar on the host terminal (ZIP size is unknown upfront).
+func ServeDirWithProgress(w http.ResponseWriter, r *http.Request, dirPath string) error {
 	info, err := os.Stat(dirPath)
-	if err != nil {
-		http.NotFound(w, r)
-		return
+	if err != nil || !info.IsDir() {
+		http.Error(w, "Directory not found", http.StatusNotFound)
+		return fmt.Errorf("stat dir %q: %w", dirPath, err)
 	}
 
-	bar := ui.NewIndeterminateProgressBar("Archiving and Sending " + info.Name())
-	pw := &progressResponseWriter{
-		ResponseWriter: w,
-		bar:            bar,
-	}
+	bar := progressbar.Default(-1, "Streaming ZIP")
 
-	pw.Header().Set("Content-Type", "application/zip")
-	pw.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s.zip"`, info.Name()))
+	w.Header().Set("Content-Type", "application/zip")
+	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s.zip"`, info.Name()))
 
-	zipWriter := zip.NewWriter(pw)
-	defer zipWriter.Close()
+	writer := io.MultiWriter(w, bar)
+	zipWriter := zip.NewWriter(writer)
+	defer func() {
+		zipWriter.Close()
+		fmt.Println() // newline after bar
+	}()
 
-	err = filepath.Walk(dirPath, func(path string, fileInfo os.FileInfo, err error) error {
+	return filepath.Walk(dirPath, func(path string, fileInfo os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-
 		if fileInfo.IsDir() {
 			return nil
 		}
@@ -153,22 +150,18 @@ func ServeDirWithProgress(w http.ResponseWriter, r *http.Request, dirPath string
 			return err
 		}
 
-		zipFile, err := zipWriter.Create(filepath.ToSlash(relPath))
+		zipEntry, err := zipWriter.Create(filepath.ToSlash(relPath))
 		if err != nil {
 			return err
 		}
 
-		file, err := os.Open(path)
+		f, err := os.Open(path)
 		if err != nil {
 			return err
 		}
-		defer file.Close()
+		defer f.Close()
 
-		_, err = io.Copy(zipFile, file)
+		_, err = io.Copy(zipEntry, f)
 		return err
 	})
-
-	if err != nil {
-		fmt.Printf("[Error] Failed to stream ZIP: %v\n", err)
-	}
 }
