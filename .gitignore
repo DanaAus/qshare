@@ -8,9 +8,8 @@
 # Binary/executable artifacts
 bin/
 qshare
-qshare.exe
-qshare.exe~
 GEMINI.md
+conductor
 
 # Go artifacts
 *.test
