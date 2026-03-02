@@ -10,6 +10,7 @@
 - **Gorilla WebSocket (gorilla/websocket):** A reliable WebSocket implementation for real-time, bidirectional data transfers.
 
 ## Terminal User Interface
+- **Huh (charmbracelet/huh):** A powerful library for building terminal forms and interactive prompts.
 - **QR Terminal (mdp/qrterminal/v3):** For generating and displaying QR codes directly in the terminal.
 - **Colorstring (mitchellh/colorstring):** To simplify terminal colorization and formatting.
 - **Progressbar (schollz/progressbar/v3):** For displaying real-time progress for file transfers.
