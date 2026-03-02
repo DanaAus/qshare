@@ -108,8 +108,8 @@ func ServeFileWithProgress(w http.ResponseWriter, r *http.Request, filePath stri
 	bar := progressbar.DefaultBytes(info.Size(), "Sending file")
 
 	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, info.Name()))
-	writer := io.MultiWriter(w, bar)
-	if _, err := io.Copy(writer, file); err != nil {
+	pr := NewProgressReader(r.Context(), file, bar)
+	if _, err := io.Copy(w, pr); err != nil {
 		return fmt.Errorf("copy: %w", err)
 	}
 	fmt.Println() // newline after bar
@@ -130,8 +130,8 @@ func ServeDirWithProgress(w http.ResponseWriter, r *http.Request, dirPath string
 	w.Header().Set("Content-Type", "application/zip")
 	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s.zip"`, info.Name()))
 
-	writer := io.MultiWriter(w, bar)
-	zipWriter := zip.NewWriter(writer)
+	pw := NewProgressWriter(r.Context(), w, bar)
+	zipWriter := zip.NewWriter(pw)
 	defer func() {
 		zipWriter.Close()
 		fmt.Println() // newline after bar
