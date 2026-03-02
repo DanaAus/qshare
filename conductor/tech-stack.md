@@ -19,4 +19,4 @@
 - **fsnotify (fsnotify/fsnotify):** Cross-platform file system notifications for tracking file changes.
 
 ## Web Interface
-- **Embedded HTML (ui/dropzone.html):** A minimal, responsive web-based UI for receiving files, served directly from the application.
+- **Embedded HTML (ui/dropzone.html, ui/pin.html):** Minimal, responsive web-based UIs for receiving files and secure access, served directly from the application.
