@@ -90,4 +90,4 @@ QShare is open-source software, and contributions are always welcome! If you'd l
 5. Open a Pull Request.
 
 ## 📄 License
-This project is distributed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it as you see fit.
+This project is distributed under the [Apache 2.0 License](LICENSE). Feel free to use, modify, and distribute it as you see fit.
