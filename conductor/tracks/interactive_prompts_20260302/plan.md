@@ -17,11 +17,11 @@ This plan outlines the steps for implementing an interactive TUI for QShare usin
 - [x] **Task: Implement feature-specific configuration forms** 1cd18c2
     - [x] Create sub-forms for `Send`, `Receive`, and `Sync` with appropriate fields (Path, Port, PIN, Secure).
     - [x] Add validation logic for the input fields (e.g., non-empty paths, valid port numbers).
-- [ ] **Task: Integrate into Root Command**
-    - [ ] Modify `cmd/root.go` to detect if no arguments or flags are provided.
-    - [ ] Call the interactive prompt logic when the trigger conditions are met.
-- [ ] **Task: Map Interactive Inputs to Command Logic**
-    - [ ] Ensure that once the interactive session is complete, it calls the corresponding internal handlers (e.g., `handlers.StartSendServer`).
+- [x] **Task: Integrate into Root Command** c64c5b1
+    - [x] Modify `cmd/root.go` to detect if no arguments or flags are provided.
+    - [x] Call the interactive prompt logic when the trigger conditions are met.
+- [x] **Task: Map Interactive Inputs to Command Logic** c64c5b1
+    - [x] Ensure that once the interactive session is complete, it calls the corresponding internal handlers (e.g., `handlers.StartSendServer`).
 - [ ] **Task: Conductor - User Manual Verification 'Core Feature Implementation' (Protocol in workflow.md)**
 
 ## Phase 3: Refinement and Polishing
