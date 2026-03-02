@@ -13,6 +13,7 @@ Bridging the gap between diverse devices on the same network (e.g., PC to mobile
 ## Key Features
 - **QR Generation:** Instantly display access URLs as QR codes in the terminal.
 - **Real-time Progress Tracking:** Provide visual feedback with progress bars and transfer speeds.
+- **Interactive TUI Mode:** A guided, prompt-based interface for effortless task configuration without complex flags.
 - **Memory-Efficient Streaming:** Support for ultra-large files (10GB+) with minimal RAM footprint (<20MB).
 - **WebSocket Support:** Enable fast, efficient, and bidirectional data streaming.
 - **Web Dropzone:** A lightweight, browser-based UI for receiving files on any device.
