@@ -14,9 +14,9 @@ This plan outlines the steps for implementing an interactive TUI for QShare usin
 - [x] **Task: Conductor - User Manual Verification 'Setup and Prototyping' (Protocol in workflow.md)**
 
 ## Phase 2: Core Feature Implementation
-- [ ] **Task: Implement feature-specific configuration forms**
-    - [ ] Create sub-forms for `Send`, `Receive`, and `Sync` with appropriate fields (Path, Port, PIN, Secure).
-    - [ ] Add validation logic for the input fields (e.g., non-empty paths, valid port numbers).
+- [x] **Task: Implement feature-specific configuration forms** 1cd18c2
+    - [x] Create sub-forms for `Send`, `Receive`, and `Sync` with appropriate fields (Path, Port, PIN, Secure).
+    - [x] Add validation logic for the input fields (e.g., non-empty paths, valid port numbers).
 - [ ] **Task: Integrate into Root Command**
     - [ ] Modify `cmd/root.go` to detect if no arguments or flags are provided.
     - [ ] Call the interactive prompt logic when the trigger conditions are met.
