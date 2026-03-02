@@ -24,10 +24,10 @@ This plan outlines the steps for implementing an interactive TUI for QShare usin
     - [x] Ensure that once the interactive session is complete, it calls the corresponding internal handlers (e.g., `handlers.StartSendServer`).
 - [x] **Task: Conductor - User Manual Verification 'Core Feature Implementation' (Protocol in workflow.md)**
 
-## Phase 3: Refinement and Polishing
+## Phase 3: Refinement and Polishing [checkpoint: b8d82e9]
 - [x] **Task: Refine UI and Error Handling** a620b5f
     - [x] Improve the visual presentation of the prompts.
     - [x] Ensure that cancelling the interactive session (e.g., Ctrl+C) exits gracefully.
 - [x] **Task: Final verification of CLI flag parity** c64c5b1
     - [x] Ensure that running the CLI with traditional flags still works as expected.
-- [ ] **Task: Conductor - User Manual Verification 'Refinement and Polishing' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Refinement and Polishing' (Protocol in workflow.md)**
