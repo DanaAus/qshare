@@ -1,8 +1,0 @@
-{
-  "track_id": "stream_large_files_20260302",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-03-02T00:00:00Z",
-  "updated_at": "2026-03-02T00:00:00Z",
-  "description": "Stream Large Files (Memory Safety): Ensure you aren't loading entire files into RAM before sending. Use Go's io.Copy to stream the file directly from disk to the HTTP response writer. This ensures memory usage stays under 20MB even when transferring a 10GB file."
-}

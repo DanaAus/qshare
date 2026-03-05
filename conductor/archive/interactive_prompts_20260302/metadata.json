@@ -1,8 +1,0 @@
-{
-  "track_id": "interactive_prompts_20260302",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-03-02T09:00:00Z",
-  "updated_at": "2026-03-02T09:00:00Z",
-  "description": "Interactive Prompts: Instead of forcing users to type long flags (e.g., qshare sync --port 8080 --secure), if they just type qshare, launch a slick, interactive terminal UI (using github.com/charmbracelet/huh or AlecAivazis/survey) asking them: "Do you want to Send, Receive, or Sync?""
-}

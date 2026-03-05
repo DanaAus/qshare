@@ -1,8 +1,0 @@
-{
-  "track_id": "fix_secure_send_pin_bug_20260302",
-  "type": "bug",
-  "status": "new",
-  "created_at": "2026-03-02T10:20:00Z",
-  "updated_at": "2026-03-02T10:20:00Z",
-  "description": "Fix a bug where the secure send link immediately returns 'Invalid PIN' without a UI to enter the PIN."
-}
