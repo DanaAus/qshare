@@ -1,4 +1,4 @@
-module qshare
+module magshare
 
 go 1.25.0
 

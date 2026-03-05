@@ -2,7 +2,7 @@ package ui_test
 
 import (
 	"testing"
-	"qshare/internal/ui"
+	"magshare/internal/ui"
 )
 
 func TestNewProgressBar(t *testing.T) {

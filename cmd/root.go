@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"os"
 
-	"qshare/internal/handlers"
-	"qshare/internal/ui"
+	"magshare/internal/handlers"
+	"magshare/internal/ui"
 
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "qshare",
-	Short: "QShare is an instant local network file sharing tool",
-	Long:  `QShare allows you to instantly share and receive files across your local network. It spawns ephemeral web servers and provides QR codes for easy access.`,
+	Use:   "MagShare",
+	Short: "MagShare is an instant local network file sharing tool",
+	Long:  `MagShare allows you to instantly share and receive files across your local network. It spawns ephemeral web servers and provides QR codes for easy access.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If no subcommand is provided, run interactive mode
 		cfg, err := ui.RunInteractivePrompts()

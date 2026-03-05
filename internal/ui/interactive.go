@@ -17,7 +17,7 @@ type InteractiveConfig struct {
 	Secure bool
 }
 
-// RunInteractivePrompts launches the interactive TUI for QShare.
+// RunInteractivePrompts launches the interactive TUI for MagShare.
 func RunInteractivePrompts() (*InteractiveConfig, error) {
 	cfg := &InteractiveConfig{
 		Port: 8080, // Default port
@@ -27,7 +27,7 @@ func RunInteractivePrompts() (*InteractiveConfig, error) {
 	actionForm := huh.NewForm(
 		huh.NewGroup(
 			huh.NewSelect[string]().
-				Title("QShare Interactive").
+				Title("MagShare Interactive").
 				Description("Choose what you want to do today.").
 				Options(
 					huh.NewOption("Send File/Folder", "send"),

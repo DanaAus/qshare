@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🚀 QShare
+# 🚀 magshare
 
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Go Report Card](https://goreportcard.com/badge/github.com/DanaAus/qshare)](https://goreportcard.com/report/github.com/DanaAus/qshare)
+[![Go Report Card](https://goreportcard.com/badge/github.com/DanaAus/magshare)](https://goreportcard.com/report/github.com/DanaAus/magshare)
 
 **Instant, frictionless file sharing and receiving across your local network via CLI.**
 
@@ -12,7 +12,7 @@
 
 ---
 
-**QShare** is a blazing-fast, terminal-based utility designed to eliminate the friction of transferring files between devices on the same local network. By spinning up an ephemeral local web server and rendering a QR code directly in your terminal, it allows any mobile device or PC to securely download or upload files in seconds—no cables, no cloud drives, and no client-side app installations required.
+**magshare** is a blazing-fast, terminal-based utility designed to eliminate the friction of transferring files between devices on the same local network. By spinning up an ephemeral local web server and rendering a QR code directly in your terminal, it allows any mobile device or PC to securely download or upload files in seconds—no cables, no cloud drives, and no client-side app installations required.
 
 ## ✨ Core Features
 
@@ -26,63 +26,63 @@
 
 ## 📦 Installation
 
-QShare is distributed as a standalone executable. Choose your preferred package manager below:
+magshare is distributed as a standalone executable. Choose your preferred package manager below:
 
 ### Windows Native
 **Using Scoop:**
 ```powershell
-scoop bucket add qshare https://github.com/DanaAus/qshare
-scoop install qshare
+scoop bucket add magshare https://github.com/DanaAus/magshare
+scoop install magshare
 ```
 
 **Using WinGet:**
 ```powershell
-winget install QShare
+winget install magshare
 ```
 
 ### Cross-Platform (Node / JavaScript Ecosystem)
-If you already have a Node or Bun environment, you can install or run QShare globally:
+If you already have a Node or Bun environment, you can install or run magshare globally:
 ```bash
-bun x qshare
+bun x magshare
 # OR
-npm install -g qshare
+npm install -g magshare
 ```
 
 ### From Source (Go)
 For developers who want to compile the latest version directly:
 ```bash
-go install github.com/DanaAus/qshare@latest
+go install github.com/DanaAus/magshare@latest
 ```
 
 ---
 
 ## 🚀 Usage
 
-QShare is designed to be completely intuitive. You can use the guided TUI, or pass commands directly.
+magshare is designed to be completely intuitive. You can use the guided TUI, or pass commands directly.
 
 ### 1. Interactive TUI Mode
 Simply run the command with no arguments to launch the interactive terminal interface:
 ```bash
-qshare
+magshare
 ```
 
 ### 2. Sending a File (Host ➔ Client)
 Share a specific file. The client's browser will automatically prompt a direct download upon scanning the QR code.
 ```bash
-qshare send ./my-file.txt
+magshare send ./my-file.txt
 ```
 *Tip: Add the `--secure` flag to generate a one-time PIN for the transfer.*
 
 ### 3. Receiving Files (Client ➔ Host)
 Spin up a temporary web server that allows anyone on the network to upload files directly to your current terminal directory.
 ```bash
-qshare receive
+magshare receive
 ```
 
 ---
 
 ## 🤝 Contributing
-QShare is open-source software, and contributions are always welcome! If you'd like to improve the codebase, add a feature, or report a bug:
+magshare is open-source software, and contributions are always welcome! If you'd like to improve the codebase, add a feature, or report a bug:
 1. Fork the repository.
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).

@@ -10,9 +10,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"qshare/internal/network"
-	"qshare/internal/server"
-	"qshare/ui"
+	"magshare/internal/network"
+	"magshare/internal/server"
+	"magshare/ui"
 
 	"github.com/mdp/qrterminal/v3"
 	"github.com/schollz/progressbar/v3"

@@ -1,0 +1,21 @@
+{
+    "version": "1.0.0",
+    "description": "Instant, frictionless file sharing across a local network with QR codes.",
+    "homepage": "https://github.com/DanaAus/magshare",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/DanaAus/magshare/releases/download/v1.0.0/magshare.exe",
+            "hash": "8245D7BAE457BA5FB487397009C49FA50B3FC0265E2BEED126AF9D8566396A40"
+        }
+    },
+    "bin": "magshare.exe",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/DanaAus/magshare/releases/download/v$version/magshare.exe"
+            }
+        }
+    }
+}

@@ -3,7 +3,7 @@ package cmd
 import (
 	"log"
 
-	"qshare/internal/handlers"
+	"magshare/internal/handlers"
 
 	"github.com/spf13/cobra"
 )

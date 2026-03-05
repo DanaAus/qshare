@@ -1,4 +1,4 @@
-# Product Specification Document: QShare (Instant Local Network Share & Drop)
+# Product Specification Document: magshare (Instant Local Network Share & Drop)
 
 **Document Version:** 1.0
 **Target Platform:** Windows (Primary)
@@ -11,7 +11,7 @@
 Transferring files between a PC and a mobile device, or two PCs on the same local network, is unnecessarily frictionless. Users resort to sending files to themselves via email, using messaging apps (which compress media), uploading to cloud storage (Google Drive/Dropbox), or dealing with complex SMB network sharing configurations.
 
 ### 1.2 The Solution
-**QShare** is a terminal-based utility that eliminates this friction. By executing a single command, the tool spins up an ephemeral (temporary) local web server, binds to the machine's local IP address, and generates a QR code directly in the terminal. Any device on the same Wi-Fi network can scan the QR code to securely download the file or upload files directly to the host PC. 
+**magshare** is a terminal-based utility that eliminates this friction. By executing a single command, the tool spins up an ephemeral (temporary) local web server, binds to the machine's local IP address, and generates a QR code directly in the terminal. Any device on the same Wi-Fi network can scan the QR code to securely download the file or upload files directly to the host PC. 
 
 ---
 
@@ -19,11 +19,11 @@ Transferring files between a PC and a mobile device, or two PCs on the same loca
 
 ### 2.1 "Send" Mode (Host -> Client)
 *   **Single File Sharing:** Serve a specific file. The client's browser prompts a direct download.
-*   **Directory Sharing (Zip-on-the-fly):** If the user targets a folder (`qshare send ./documents`), the tool dynamically compresses the folder into a `.zip` stream as the client downloads it, saving local disk space.
+*   **Directory Sharing (Zip-on-the-fly):** If the user targets a folder (`magshare send ./documents`), the tool dynamically compresses the folder into a `.zip` stream as the client downloads it, saving local disk space.
 *   **QR Code Terminal Rendering:** Generates an ASCII/ANSI-based QR code in the console so mobile devices can connect instantly without typing an IP address.
 
 ### 2.2 "Receive" Mode (Client -> Host)
-*   **Dropzone UI:** Running `qshare receive` serves a minimalist, responsive HTML5 web page to the client. It features a drag-and-drop zone and a file-picker button.
+*   **Dropzone UI:** Running `magshare receive` serves a minimalist, responsive HTML5 web page to the client. It features a drag-and-drop zone and a file-picker button.
 *   **Direct Saving:** Files uploaded from the client are saved directly into the directory where the terminal command was executed.
 
 ### 2.3 Network Interface Auto-Discovery
@@ -40,7 +40,7 @@ Transferring files between a PC and a mobile device, or two PCs on the same loca
 
 ## 3. Security & Privacy Methods
 
-Opening a port on a local network can expose data, especially on public Wi-Fi (e.g., coffee shops). QShare implements several security layers:
+Opening a port on a local network can expose data, especially on public Wi-Fi (e.g., coffee shops). magshare implements several security layers:
 
 ### 3.1 Network Isolation
 *   **Randomized Ports:** Never uses standard ports (like 80 or 8080). Randomly assigns a high, unused port (e.g., `49152-65535`) for each session.
@@ -60,7 +60,7 @@ Opening a port on a local network can expose data, especially on public Wi-Fi (e
 
 **Scenario 1: Sending a file**
 ```bash
-> qshare send presentation.pdf
+> magshare send presentation.pdf
 
 [Network] Using active interface: Wi-Fi (192.168.1.15)
 [Server]  Started on port 51234
@@ -72,7 +72,7 @@ Status: Waiting for connection... (Server will close after 1 download)
 
 **Scenario 2: Receiving files securely**
 ```bash
-> qshare receive --secure
+> magshare receive --secure
 
 [Network] Using active interface: Wi-Fi (192.168.1.15)
 [Server]  Dropzone started on port 60112[Auth]    PIN REQUIRED: 4892

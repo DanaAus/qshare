@@ -1,6 +1,6 @@
 package main
 
-import "qshare/cmd"
+import "magshare/cmd"
 
 func main() {
 	cmd.Execute()
