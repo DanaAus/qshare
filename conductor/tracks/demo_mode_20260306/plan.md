@@ -23,11 +23,11 @@ This plan outlines the steps required to implement the "Demo Mode" for magshare,
     - [ ] Modify the `interactive.go` and related TUI logic to respect the demo flag when displaying connection details.
 - [x] **Task: Conductor - User Manual Verification 'Phase 2: Integration into Commands' (Protocol in workflow.md)** 5260db4
 
-## Phase 3: Stealth & Verification
+## Phase 3: Stealth & Verification [checkpoint: 5f38506]
 - [x] **Task: Ensure Stealth Attribute** 18eb1a1
     - [ ] Review all UI components to ensure no "Demo Mode" label or status is visible when the flag is active.
 - [x] **Task: Verification and Manual Testing** a90fdf7
     - [ ] Verify `magshare send --demo` shows faked details.
     - [ ] Verify `magshare receive --demo` shows faked details.
     - [ ] Verify the actual server still binds to the real IP (internal functionality test).
-- [ ] **Task: Conductor - User Manual Verification 'Phase 3: Stealth & Verification' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Phase 3: Stealth & Verification' (Protocol in workflow.md)** 5f38506
