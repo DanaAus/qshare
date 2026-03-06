@@ -3,7 +3,7 @@
 This plan outlines the steps required to implement the "Demo Mode" for magshare, faking connection information for promotional purposes while maintaining stealth.
 
 ## Phase 1: Core Logic & Flag Definition
-- [ ] **Task: Define the Global Demo Flag**
+- [x] **Task: Define the Global Demo Flag** e037374
     - [ ] Add a new flag (e.g., `--demo`) to the root command in `cmd/root.go`.
     - [ ] Ensure the flag is persistent and accessible to all subcommands (`send`, `receive`).
     - [ ] Update any necessary state or context objects to carry this flag.
