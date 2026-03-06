@@ -20,7 +20,7 @@ var rootCmd = &cobra.Command{
 	Long:  `MagShare allows you to instantly share and receive files across your local network. It spawns ephemeral web servers and provides QR codes for easy access.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If no subcommand is provided, run interactive mode
-		cfg, err := ui.RunInteractivePrompts()
+		cfg, err := ui.RunInteractivePrompts(demoMode)
 		if err != nil {
 			if err.Error() == "user cancelled" {
 				return nil

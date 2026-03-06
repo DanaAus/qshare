@@ -15,12 +15,14 @@ type InteractiveConfig struct {
 	Port   int
 	PIN    string
 	Secure bool
+	Demo   bool
 }
 
 // RunInteractivePrompts launches the interactive TUI for MagShare.
-func RunInteractivePrompts() (*InteractiveConfig, error) {
+func RunInteractivePrompts(demo bool) (*InteractiveConfig, error) {
 	cfg := &InteractiveConfig{
 		Port: 8080, // Default port
+		Demo: demo,
 	}
 
 	// 1. Choose Action

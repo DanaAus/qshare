@@ -11,6 +11,7 @@ func TestInteractiveConfigStructure(t *testing.T) {
 		Port:   8080,
 		PIN:    "1234",
 		Secure: true,
+		Demo:   true,
 	}
 
 	if cfg.Action != "send" {
