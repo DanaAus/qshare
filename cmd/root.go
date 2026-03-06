@@ -10,6 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	demoMode bool
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "MagShare",
 	Short: "MagShare is an instant local network file sharing tool",
@@ -30,6 +34,7 @@ var rootCmd = &cobra.Command{
 				Port:   cfg.Port,
 				Secure: cfg.Secure,
 				PIN:    cfg.PIN,
+				Demo:   demoMode,
 			}
 			return handlers.StartSendServer(cfg.Path, opts)
 		case "receive":
@@ -37,6 +42,7 @@ var rootCmd = &cobra.Command{
 				Port:   cfg.Port,
 				Secure: cfg.Secure,
 				PIN:    cfg.PIN,
+				Demo:   demoMode,
 			}
 			return handlers.StartReceiveServer(cfg.Path, opts)
 		default:
@@ -55,4 +61,5 @@ func Execute() {
 
 func init() {
 	// Global flags can go here
+	rootCmd.PersistentFlags().BoolVarP(&demoMode, "demo", "", false, "Enable demo mode with fake connection information")
 }

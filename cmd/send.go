@@ -19,6 +19,7 @@ var sendCmd = &cobra.Command{
 
 		opts := handlers.SendOptions{
 			Secure: sendSecure,
+			Demo:   demoMode,
 		}
 
 		if err := handlers.StartSendServer(path, opts); err != nil {

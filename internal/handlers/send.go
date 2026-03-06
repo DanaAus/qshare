@@ -23,6 +23,7 @@ type SendOptions struct {
 	Port   int
 	Secure bool
 	PIN    string
+	Demo   bool
 }
 
 // StartSendServer initializes the ephemeral server and handles file sending.

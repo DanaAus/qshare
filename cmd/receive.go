@@ -16,6 +16,7 @@ var receiveCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		opts := handlers.ReceiveOptions{
 			Secure: receiveSecure,
+			Demo:   demoMode,
 		}
 		if err := handlers.StartReceiveServer("", opts); err != nil {
 			log.Fatalf("\n[Error] %v\n", err)

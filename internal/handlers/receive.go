@@ -23,6 +23,7 @@ type ReceiveOptions struct {
 	Port   int
 	Secure bool
 	PIN    string
+	Demo   bool
 }
 
 // StartReceiveServer initializes the ephemeral server to receive files.
