@@ -58,8 +58,12 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 	downloadPath := fmt.Sprintf("/d/%s", hash)
 	downloadURL := fmt.Sprintf("http://%s:%d%s", ip, port, downloadPath)
 
+	// Demo Mode Faking for Display
+	displayIP := network.GetDisplayIP(ip, opts.Demo)
+	displayURL := network.GetDisplayURL(downloadURL, opts.Demo)
+
 	// Output Info
-	fmt.Printf("[Network] Using active interface: %s\n", ip)
+	fmt.Printf("[Network] Using active interface: %s\n", displayIP)
 	fmt.Printf("[Server]  Started on port %d\n", port)
 	if opts.Secure {
 		if opts.PIN == "" {
@@ -67,11 +71,11 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 		}
 		fmt.Printf("[Auth]    PIN REQUIRED: %s\n", opts.PIN)
 	}
-	fmt.Printf("[URL]     %s\n", downloadURL)
+	fmt.Printf("[URL]     %s\n", displayURL)
 
 	// Print QR
 	fmt.Println("[QR]")
-	qrterminal.GenerateHalfBlock(downloadURL, qrterminal.L, os.Stdout)
+	qrterminal.GenerateHalfBlock(displayURL, qrterminal.L, os.Stdout)
 
 	// 4. Setup Server
 	srv := server.NewEphemeralServer(port)
