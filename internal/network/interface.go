@@ -52,3 +52,33 @@ func GetActiveIPv4Interface() (string, error) {
 
 	return "", errors.New("no active non-virtual network interface found")
 }
+
+// GetDisplayIP returns a fake IP if demo mode is active.
+func GetDisplayIP(realIP string, demo bool) string {
+	if demo {
+		return "192.168.100.100"
+	}
+	return realIP
+}
+
+// GetDisplayURL replaces the real IP and port in a URL with a fake one if demo mode is active.
+func GetDisplayURL(realURL string, demo bool) string {
+	if !demo {
+		return realURL
+	}
+	
+	// Find the scheme end
+	start := strings.Index(realURL, "//")
+	if start == -1 {
+		return realURL
+	}
+	start += 2
+	
+	// Find the end of host:port part
+	end := strings.Index(realURL[start:], "/")
+	if end == -1 {
+		end = len(realURL[start:])
+	}
+	
+	return realURL[:start] + "192.168.100.100:8080" + realURL[start+end:]
+}
