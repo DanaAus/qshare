@@ -1,0 +1,8 @@
+{
+  "track_id": "demo_mode_20260306",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-06T20:34:00Z",
+  "updated_at": "2026-03-06T20:34:00Z",
+  "description": "Implement a new stealth mode called \"Demo Mode\". Once this mode is activated, it will fake all connection information in both receive and send mode (Including IP address, QR Code and etc.). Because of its \"Stealth\" attribute, the program must not display the status of this mode when it is activated. The reason we're implementing this mode is to help me recording advertising things for the program without being attacked by some bad dudes"
+}
