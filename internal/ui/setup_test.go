@@ -12,10 +12,21 @@ func TestDefaultDownloadDir(t *testing.T) {
 		t.Skip("skipping test; home directory not available")
 	}
 
-	expected := filepath.Join(home, "Magshare Downloads")
-	// This is internal logic inside RunFirstRunSetup, hard to test without refactoring.
-	// But we can check if we can at least resolve the home dir.
-	if expected == "" {
-		t.Error("expected default download dir to not be empty")
+	got := filepath.Join(home, "Magshare Downloads")
+	if !filepath.IsAbs(got) {
+		t.Errorf("expected absolute path, got %q", got)
+	}
+}
+
+func TestSetupResultStructure(t *testing.T) {
+	result := &SetupResult{
+		DownloadDir: "/tmp/magshare",
+		SecureMode:  true,
+	}
+	if result.DownloadDir != "/tmp/magshare" {
+		t.Error("DownloadDir not set correctly")
+	}
+	if !result.SecureMode {
+		t.Error("SecureMode not set correctly")
 	}
 }
