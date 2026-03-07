@@ -7,6 +7,7 @@
 *   **CLI Framework:** **spf13/cobra** - For robust command-line argument parsing and command structure.
 *   **Terminal UI (TUI):** **Charmbracelet ecosystem (Bubbletea, Huh, Lipgloss)** - For building modern, interactive, and visually appealing terminal interfaces.
 *   **Networking:** **Standard net/http** - For a lightweight and performant local web server.
+*   **Logging:** **Custom Structured Logger** - Thread-safe, leveled logging with hybrid terminal/file output and rich metadata.
 *   **Real-time Communication:** **Gorilla WebSocket** - To provide live progress updates and a responsive user experience in the web UI.
 *   **QR Rendering:** **mdp/qrterminal** - To display scannable QR codes directly within the terminal.
 
