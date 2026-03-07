@@ -28,9 +28,9 @@
     - [ ] Use config values as the initial state for the TUI form.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Subcommand and Interactive Mode Update' (Protocol in workflow.md) b2d87bc
 
-## Phase 4: Final Validation
+## Phase 4: Final Validation [checkpoint: cd5090e]
 - [x] Task: End-to-end manual verification (manual)
-    - [ ] Set `secure_mode: true` in config, run `send` without flags, verify PIN is required.
-    - [ ] Run `send --secure=false`, verify PIN is NOT required.
-    - [ ] Verify `receive` uses the setup download directory.
-- [~] Task: Conductor - User Manual Verification 'Phase 4: Final Validation' (Protocol in workflow.md)
+    - [x] Set `secure_mode: true` in config, run `send` without flags, verify PIN is required.
+    - [x] Run `send --secure=false`, verify PIN is NOT required.
+    - [x] Verify `receive` uses the setup download directory.
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Final Validation' (Protocol in workflow.md) cd5090e
