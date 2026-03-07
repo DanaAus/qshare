@@ -14,9 +14,18 @@ func TestInitializeWorkspaceAtPath(t *testing.T) {
 	defer os.RemoveAll(tmpBase)
 
 	testRoot := filepath.Join(tmpBase, "magshare_test")
+	downloadDir := filepath.Join(tmpBase, "downloads")
 	
-	// 1. Initial run: should create folders and return isFirstRun = true
-	isFirstRun, err := InitializeWorkspaceAtPath(testRoot)
+	mockSetup := func() (Config, error) {
+		return Config{
+			Port:        1234,
+			DownloadDir: downloadDir,
+			SecureMode:  true,
+		}, nil
+	}
+
+	// 1. Initial run: should create folders, config, and download dir, return isFirstRun = true
+	isFirstRun, err := InitializeWorkspaceAtPath(testRoot, mockSetup)
 	if err != nil {
 		t.Fatalf("InitializeWorkspaceAtPath returned error: %v", err)
 	}
@@ -28,17 +37,18 @@ func TestInitializeWorkspaceAtPath(t *testing.T) {
 	if !FileExists(testRoot) {
 		t.Error("Workspace root not created")
 	}
-	logsDir := filepath.Join(testRoot, "logs")
-	if !FileExists(logsDir) {
+	if !FileExists(filepath.Join(testRoot, "logs")) {
 		t.Error("Logs directory not created")
 	}
-	configPath := filepath.Join(testRoot, "config.json")
-	if !FileExists(configPath) {
+	if !FileExists(filepath.Join(testRoot, "config.json")) {
 		t.Error("Config file not created")
+	}
+	if !FileExists(downloadDir) {
+		t.Error("Download directory not created")
 	}
 
 	// 2. Second run: should return isFirstRun = false
-	isFirstRun, err = InitializeWorkspaceAtPath(testRoot)
+	isFirstRun, err = InitializeWorkspaceAtPath(testRoot, mockSetup)
 	if err != nil {
 		t.Fatalf("InitializeWorkspaceAtPath (second run) returned error: %v", err)
 	}
@@ -48,12 +58,8 @@ func TestInitializeWorkspaceAtPath(t *testing.T) {
 }
 
 func TestInitializeWorkspace(t *testing.T) {
-	// This will use the actual system UserConfigDir/LOCALAPPDATA
-	// We should be careful not to mess up actual config.
-	// But InitializeWorkspace just checks if it exists.
-	
-	// We can at least call it and check it doesn't error.
-	_, err := InitializeWorkspace()
+	// Simple smoke test
+	_, err := InitializeWorkspace(nil)
 	if err != nil {
 		t.Errorf("InitializeWorkspace() returned error: %v", err)
 	}

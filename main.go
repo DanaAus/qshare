@@ -10,8 +10,20 @@ import (
 )
 
 func main() {
-	// 1. Initialize Workspace
-	isFirstRun, err := workspace.InitializeWorkspace()
+	// 1. Initialize Workspace with Interactive Setup if needed
+	setupFunc := func() (workspace.Config, error) {
+		res, err := ui.RunFirstRunSetup()
+		if err != nil {
+			return workspace.Config{}, err
+		}
+		return workspace.Config{
+			Port:        8080, // Default for now
+			DownloadDir: res.DownloadDir,
+			SecureMode:  res.SecureMode,
+		}, nil
+	}
+
+	isFirstRun, err := workspace.InitializeWorkspace(setupFunc)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error initializing workspace: %v\n", err)
 		os.Exit(1)
@@ -28,7 +40,6 @@ func main() {
 	l.Debug("Application starting...")
 
 	var exitCode int
-	// panicOccurred := true // Not needed if we use the l instance
 
 	// 3. Crash Recovery and Cleanup
 	defer func() {
@@ -53,10 +64,11 @@ func main() {
 		}
 	}()
 
-	// 4. Welcome Message
+	// 4. Welcome Message (if setup was performed, we skip welcome as setup is enough?)
+	// Actually spec says "display a one-time Welcome to magshare message".
+	// Setup is already a "welcome".
 	if isFirstRun {
-		l.Info("First run detected, displaying welcome message")
-		ui.DisplayWelcomeMessage(os.Stdout)
+		// ui.DisplayWelcomeMessage(os.Stdout)
 	}
 
 	// 5. Execute Command
