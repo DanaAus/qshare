@@ -7,19 +7,15 @@ import (
 
 // Config represents the magshare configuration.
 type Config struct {
-	Port       int    `json:"port"`
-	SecureMode bool   `json:"secure_mode"`
-	PIN        string `json:"pin,omitempty"`
+	Port        int    `json:"port"`
+	SecureMode  bool   `json:"secure_mode"`
+	PIN         string `json:"pin,omitempty"`
+	DownloadDir string `json:"download_dir"`
 }
 
-// CreateDefaultConfig creates a default configuration file at the specified path.
-func CreateDefaultConfig(path string) error {
-	defaultConfig := Config{
-		Port:       8080,
-		SecureMode: false,
-	}
-
-	data, err := json.MarshalIndent(defaultConfig, "", "  ")
+// CreateDefaultConfig creates a configuration file at the specified path with the given config.
+func CreateDefaultConfig(path string, cfg Config) error {
+	data, err := json.MarshalIndent(cfg, "", "  ")
 	if err != nil {
 		return err
 	}

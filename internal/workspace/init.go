@@ -32,7 +32,11 @@ func InitializeWorkspaceAtPath(root string) (bool, error) {
 
 	if isFirstRun {
 		configPath := filepath.Join(root, "config.json")
-		if err := CreateDefaultConfig(configPath); err != nil {
+		defaultCfg := Config{
+			Port:       8080,
+			SecureMode: false,
+		}
+		if err := CreateDefaultConfig(configPath, defaultCfg); err != nil {
 			return false, err
 		}
 	}
