@@ -8,6 +8,10 @@
 
 **Instant, frictionless file sharing and receiving across your local network via CLI.**
 
+<br>
+
+<img src="https://github.com/user-attachments/assets/9c94f418-8e1e-4e36-9d7b-643b72798ef8" alt="magshare demo" width="800">
+
 </div>
 
 ---
