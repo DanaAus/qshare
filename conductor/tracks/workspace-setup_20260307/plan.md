@@ -5,7 +5,7 @@
     - [ ] Create `internal/workspace/path.go` to handle system config directory discovery (e.g., `os.UserConfigDir`)
     - [ ] Implement `GetWorkspaceRoot()` and `GetLogsDir()` functions
     - [ ] Write unit tests in `internal/workspace/path_test.go` to verify correct path resolution for Windows/macOS/Linux
-- [ ] Task: Implement basic folder and file existence checks
+- [x] Task: Implement basic folder and file existence checks fdbefda
     - [ ] Add `EnsureDirectoryExists(path string)` utility
     - [ ] Add `FileExists(path string)` utility
     - [ ] Write tests to verify directory creation and file detection logic
