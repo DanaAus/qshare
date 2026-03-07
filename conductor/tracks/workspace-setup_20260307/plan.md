@@ -36,7 +36,7 @@
     - [ ] Write unit tests to verify file deletion after a successful run simulation
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Output Redirection and Logging' (Protocol in workflow.md) 4e02879
 
-## Phase 4: Crash Recovery and Exit Logic
+## Phase 4: Crash Recovery and Exit Logic [checkpoint: 812eddb]
 - [x] Task: Implement Panic handling with `defer` and `recover` fad451f
     - [ ] Add `HandlePanic(logPath string)` function
     - [ ] Logic: Recover from panic, write stack trace to log, print log path to terminal
@@ -45,7 +45,7 @@
 - [x] Task: Refactor `main.go` for integration 2dac42d
     - [ ] Update `main()` to use the new `internal/workspace`, `internal/logger`, and `HandlePanic` logic
     - [ ] Ensure proper ordering of initialization, logging setup, and panic deferment
-- [~] Task: Conductor - User Manual Verification 'Phase 4: Crash Recovery and Exit Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Crash Recovery and Exit Logic' (Protocol in workflow.md) 812eddb
 
 ## Phase 5: Quality Assurance and Final Checks
 - [ ] Task: Final end-to-end manual verification
