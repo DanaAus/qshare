@@ -30,5 +30,12 @@ func InitializeWorkspaceAtPath(root string) (bool, error) {
 		return false, err
 	}
 
+	if isFirstRun {
+		configPath := filepath.Join(root, "config.json")
+		if err := CreateDefaultConfig(configPath); err != nil {
+			return false, err
+		}
+	}
+
 	return isFirstRun, nil
 }

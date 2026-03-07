@@ -32,6 +32,10 @@ func TestInitializeWorkspaceAtPath(t *testing.T) {
 	if !FileExists(logsDir) {
 		t.Error("Logs directory not created")
 	}
+	configPath := filepath.Join(testRoot, "config.json")
+	if !FileExists(configPath) {
+		t.Error("Config file not created")
+	}
 
 	// 2. Second run: should return isFirstRun = false
 	isFirstRun, err = InitializeWorkspaceAtPath(testRoot)
