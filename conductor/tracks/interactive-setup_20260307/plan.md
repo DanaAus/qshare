@@ -19,14 +19,14 @@
     - [ ] Since TUIs are hard to unit test, focus on validating the path-checking logic in a separate utility.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Interactive Setup Implementation' (Protocol in workflow.md) 37166d7
 
-## Phase 3: Integration into Initialization
+## Phase 3: Integration into Initialization [checkpoint: 71f25bd]
 - [x] Task: Update `internal/workspace/init.go` 303ad69
     - [ ] Modify `InitializeWorkspaceAtPath` to detect missing `config.json`.
     - [ ] If missing, call `ui.RunFirstRunSetup()`.
     - [ ] Save the returned configuration using the updated `CreateDefaultConfig`.
 - [x] Task: Update `main.go` a512306
     - [ ] Ensure the welcome message and setup flow happen in the correct order.
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Integration into Initialization' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration into Initialization' (Protocol in workflow.md) 71f25bd
 
 ## Phase 4: Final Validation
 - [ ] Task: End-to-end manual verification
