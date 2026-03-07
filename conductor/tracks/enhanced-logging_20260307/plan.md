@@ -20,7 +20,7 @@
 - [x] Task: Update the global singleton logger d39f0fd
     - [ ] Provide global helper functions like `logger.Info(component, msg)`, `logger.Debug(component, msg)`, etc.
     - [ ] Ensure thread safety using `sync.Mutex` or by utilizing `log.Logger` as the underlying engine
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Hybrid Output and Filtering' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Hybrid Output and Filtering' (Protocol in workflow.md)
 
 ## Phase 3: Integration and Refactoring
 - [ ] Task: Replace raw `fmt.Print` calls with the new Logger
