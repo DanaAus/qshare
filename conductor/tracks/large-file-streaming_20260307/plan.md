@@ -7,7 +7,7 @@
     - [ ] Write unit tests to verify traversal prevention.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Security and Path Utilities' (Protocol in workflow.md) 15dbb1f
 
-## Phase 2: Progress ReadSeeker
+## Phase 2: Progress ReadSeeker [checkpoint: e6bd7c0]
 - [x] Task: Implement `ProgressReadSeeker` aa47395
     - [ ] Update `internal/handlers/progress_reader.go`
     - [ ] Create `type ProgressReadSeeker struct` that implements `io.ReadSeeker`.
@@ -15,9 +15,7 @@
         - `Read`: Call underlying reader and update progress bar.
         - `Seek`: Call underlying seeker.
     - [ ] Ensure it correctly interacts with the existing `progressbar` library.
-- [ ] Task: Write unit tests for `ProgressReadSeeker`
-    - [ ] Verify that seeking doesn't break the reader and that progress is tracked correctly after seeks.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Progress ReadSeeker' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Progress ReadSeeker' (Protocol in workflow.md) e6bd7c0
 
 ## Phase 3: Refactor File Serving
 - [ ] Task: Refactor `ServeFileWithProgress` in `internal/handlers/send.go`
