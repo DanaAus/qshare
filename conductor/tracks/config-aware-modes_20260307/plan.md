@@ -14,7 +14,7 @@
     - [ ] Create an `initConfig()` function that resolves the config path and calls `LoadConfig`.
     - [ ] Register `initConfig` with `cobra.OnInitialize()`.
     - [ ] Handle load errors by logging a warning via the structured logger.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Root Command Integration' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Root Command Integration' (Protocol in workflow.md)
 
 ## Phase 3: Subcommand and Interactive Mode Update
 - [ ] Task: Update `cmd/receive.go`
