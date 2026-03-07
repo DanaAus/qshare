@@ -12,12 +12,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Core Logger Implementation' (Protocol in workflow.md) 4720e3c
 
 ## Phase 2: Hybrid Output and Filtering
-- [ ] Task: Implement Filtered Multi-Writer
+- [x] Task: Implement Filtered Multi-Writer d39f0fd
     - [ ] Create a `FilteredWriter` that wraps an `io.Writer` and only writes if the `LogLevel` meets a threshold
     - [ ] Update `SetupLogging()` to use this `FilteredWriter` for `os.Stdout` (Threshold: INFO)
     - [ ] Ensure the log file `io.Writer` has a lower threshold (Threshold: DEBUG)
     - [ ] Write unit tests to verify that DEBUG messages are suppressed in one writer but captured in another
-- [ ] Task: Update the global singleton logger
+- [x] Task: Update the global singleton logger d39f0fd
     - [ ] Provide global helper functions like `logger.Info(component, msg)`, `logger.Debug(component, msg)`, etc.
     - [ ] Ensure thread safety using `sync.Mutex` or by utilizing `log.Logger` as the underlying engine
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Hybrid Output and Filtering' (Protocol in workflow.md)
