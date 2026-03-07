@@ -9,7 +9,7 @@
     - [ ] Add `EnsureDirectoryExists(path string)` utility
     - [ ] Add `FileExists(path string)` utility
     - [ ] Write tests to verify directory creation and file detection logic
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation and Utilities' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Foundation and Utilities' (Protocol in workflow.md)
 
 ## Phase 2: First-Run Logic and Config Creation
 - [ ] Task: Implement first-run detection and initialization
