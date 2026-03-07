@@ -1,8 +1,0 @@
-{
-  "track_id": "config-aware-modes_20260307",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-03-07T20:41:00Z",
-  "updated_at": "2026-03-07T20:41:00Z",
-  "description": "Make changes to all modes in order to make those compatible with the first-time setup process."
-}

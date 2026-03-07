@@ -1,8 +1,0 @@
-{
-  "track_id": "large-file-streaming_20260307",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-03-07T19:43:00Z",
-  "updated_at": "2026-03-07T19:43:00Z",
-  "description": "Write a Go HTTP handler for serving large files securely without loading the entire file into memory. It must support byte range request headers so that mobile browsers can pause and resume the download."
-}
