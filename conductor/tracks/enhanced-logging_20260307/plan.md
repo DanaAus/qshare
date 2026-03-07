@@ -1,0 +1,41 @@
+# Implementation Plan: Enhanced Human-Readable Logging
+
+## Phase 1: Core Logger Implementation
+- [ ] Task: Define the new Logger structure and levels
+    - [ ] Create `internal/logger/types.go` to define `LogLevel` (DEBUG, INFO, WARN, ERROR) and the `Logger` interface
+    - [ ] Implement a `StructuredLogger` struct that holds the writer, component name, and PID
+    - [ ] Write unit tests to verify level comparison and basic formatting logic
+- [ ] Task: Implement the formatting logic
+    - [ ] Add a `format(level LogLevel, msg string)` method to `StructuredLogger`
+    - [ ] Ensure it correctly interpolates `[TIMESTAMP] [LEVEL] [COMPONENT] [PID]`
+    - [ ] Write unit tests to verify the string output matches the spec example
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Core Logger Implementation' (Protocol in workflow.md)
+
+## Phase 2: Hybrid Output and Filtering
+- [ ] Task: Implement Filtered Multi-Writer
+    - [ ] Create a `FilteredWriter` that wraps an `io.Writer` and only writes if the `LogLevel` meets a threshold
+    - [ ] Update `SetupLogging()` to use this `FilteredWriter` for `os.Stdout` (Threshold: INFO)
+    - [ ] Ensure the log file `io.Writer` has a lower threshold (Threshold: DEBUG)
+    - [ ] Write unit tests to verify that DEBUG messages are suppressed in one writer but captured in another
+- [ ] Task: Update the global singleton logger
+    - [ ] Provide global helper functions like `logger.Info(component, msg)`, `logger.Debug(component, msg)`, etc.
+    - [ ] Ensure thread safety using `sync.Mutex` or by utilizing `log.Logger` as the underlying engine
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Hybrid Output and Filtering' (Protocol in workflow.md)
+
+## Phase 3: Integration and Refactoring
+- [ ] Task: Replace raw `fmt.Print` calls with the new Logger
+    - [ ] Audit `internal/server`, `internal/handlers`, and `cmd/` for terminal output
+    - [ ] Migrate essential messages to `logger.Info()` and technical details to `logger.Debug()`
+    - [ ] Update `main.go` to use the new logging methods for its lifecycle events
+- [ ] Task: Refactor Crash Recovery integration
+    - [ ] Update `HandlePanic()` to use the new formatting for the crash report header
+    - [ ] Ensure the stack trace is still captured clearly within the formatted log
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration and Refactoring' (Protocol in workflow.md)
+
+## Phase 4: Validation and Quality Assurance
+- [ ] Task: Verify >80% code coverage for the new logging system
+    - [ ] Run `go test -cover ./internal/logger/...`
+- [ ] Task: Final end-to-end manual verification
+    - [ ] Run a normal session and verify `INFO` logs in terminal and `DEBUG` logs in the file
+    - [ ] Trigger a failure and verify `ERROR` logs and metadata accuracy
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Validation and Quality Assurance' (Protocol in workflow.md)
