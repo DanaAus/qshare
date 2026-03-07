@@ -5,7 +5,7 @@
     - [ ] Create `internal/logger/types.go` to define `LogLevel` (DEBUG, INFO, WARN, ERROR) and the `Logger` interface
     - [ ] Implement a `StructuredLogger` struct that holds the writer, component name, and PID
     - [ ] Write unit tests to verify level comparison and basic formatting logic
-- [ ] Task: Implement the formatting logic
+- [x] Task: Implement the formatting logic 2a1a78c
     - [ ] Add a `format(level LogLevel, msg string)` method to `StructuredLogger`
     - [ ] Ensure it correctly interpolates `[TIMESTAMP] [LEVEL] [COMPONENT] [PID]`
     - [ ] Write unit tests to verify the string output matches the spec example
