@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"magshare/internal/logger"
 	"magshare/internal/network"
 	"magshare/internal/server"
 	"magshare/ui"
@@ -28,6 +29,8 @@ type SendOptions struct {
 
 // StartSendServer initializes the ephemeral server and handles file sending.
 func StartSendServer(targetPath string, opts SendOptions) error {
+	l := logger.WithComponent("send")
+
 	// 1. Check if path exists
 	info, err := os.Stat(targetPath)
 	if err != nil {
@@ -37,7 +40,7 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 	// 2. Discover Network Interface and Port
 	ip, err := network.GetActiveIPv4Interface()
 	if err != nil {
-		fmt.Printf("[Warning] Could not auto-detect primary IP. Using 127.0.0.1. Error: %v\n", err)
+		l.Warn(fmt.Sprintf("Could not auto-detect primary IP. Using 127.0.0.1. Error: %v", err))
 		ip = "127.0.0.1"
 	}
 
@@ -63,17 +66,18 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 	displayURL := network.GetDisplayURL(downloadURL, opts.Demo)
 
 	// Output Info
-	fmt.Printf("[Network] Using active interface: %s\n", displayIP)
-	fmt.Printf("[Server]  Started on port %d\n", port)
+	l.Info(fmt.Sprintf("Using active interface: %s", displayIP))
+	l.Info(fmt.Sprintf("Started on port %d", port))
 	if opts.Secure {
 		if opts.PIN == "" {
 			opts.PIN, _ = server.GeneratePIN()
 		}
-		fmt.Printf("[Auth]    PIN REQUIRED: %s\n", opts.PIN)
+		l.Info(fmt.Sprintf("PIN REQUIRED: %s", opts.PIN))
 	}
-	fmt.Printf("[URL]     %s\n", displayURL)
+	l.Info(fmt.Sprintf("Share URL: %s", displayURL))
 
 	// Print QR
+	l.Debug("Generating QR code...")
 	fmt.Println("[QR]")
 	qrterminal.GenerateHalfBlock(displayURL, qrterminal.L, os.Stdout)
 
@@ -111,7 +115,7 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 			}
 		}
 
-		fmt.Printf("\n[Server] Connection established from %s\n", r.RemoteAddr)
+		l.Info(fmt.Sprintf("Connection established from %s", r.RemoteAddr))
 
 		var serveErr error
 		if info.IsDir() {
@@ -121,7 +125,7 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 		}
 
 		if serveErr != nil {
-			fmt.Printf("[Error] Failed to serve content: %v\n", serveErr)
+			l.Error(fmt.Sprintf("Failed to serve content: %v", serveErr))
 		}
 
 		// Shutdown after transfer
@@ -131,7 +135,7 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 		}()
 	})
 
-	fmt.Println("\nStatus: Waiting for connection... (Server will close after 1 download, timeout 5m)")
+	l.Info("Waiting for connection... (Server will close after 1 download, timeout 5m)")
 
 	// 5. Start Server with 5-minute timeout
 	return srv.Start(5 * time.Minute)

@@ -14,28 +14,26 @@ func HandlePanic(logPath string, r interface{}) {
 		return
 	}
 
-	// Capture stack trace
-	stack := debug.Stack()
+	// 1. Log to whatever global logger is configured (usually terminal + file)
+	l := WithComponent("panic")
+	l.Error(fmt.Sprintf("magshare has crashed: %v", r))
 
-	// Prepare crash report
-	report := fmt.Sprintf("\n========== CRASH REPORT ==========\n")
-	report += fmt.Sprintf("Time: %s\n", time.Now().Format(time.RFC3339))
-	report += fmt.Sprintf("Panic: %v\n\n", r)
-	report += "STACK TRACE:\n"
-	report += string(stack)
-	report += "==================================\n"
-
-	// Write to terminal
-	fmt.Fprintf(os.Stderr, "\n[CRITICAL ERROR] magshare has crashed!\n")
-	fmt.Fprintf(os.Stderr, "Panic: %v\n", r)
-	fmt.Fprintf(os.Stderr, "Crash log saved to: %s\n", logPath)
-
-	// Write to log file
+	// 2. Ensure it's in the file even if global logger failed or was misconfigured
 	f, err := os.OpenFile(logPath, os.O_APPEND|os.O_WRONLY, 0644)
 	if err == nil {
-		f.WriteString(report)
+		timestamp := time.Now().Format("2006-01-02 15:04:05")
+		f.WriteString(fmt.Sprintf("[%s] [ERROR] [panic] [%d] magshare has crashed: %v\n", timestamp, os.Getpid(), r))
+		
+		// Capture stack trace
+		stack := debug.Stack()
+		f.WriteString("\n========== STACK TRACE ==========\n")
+		f.WriteString(string(stack))
+		f.WriteString("==================================\n")
 		f.Close()
 	}
+
+	// Write status to terminal via Stderr (unfiltered)
+	fmt.Fprintf(os.Stderr, "\nCrash log saved to: %s\n", logPath)
 
 	// Countdown timer for 5 seconds
 	fmt.Fprintf(os.Stderr, "\nClosing in ")

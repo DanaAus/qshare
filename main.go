@@ -24,8 +24,11 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error setting up logging: %v\n", err)
 	}
 
+	l := logger.WithComponent("main")
+	l.Debug("Application starting...")
+
 	var exitCode int
-	panicOccurred := true // Assume panic unless we reach the end of main normally or handled exit
+	// panicOccurred := true // Not needed if we use the l instance
 
 	// 3. Crash Recovery and Cleanup
 	defer func() {
@@ -52,17 +55,16 @@ func main() {
 
 	// 4. Welcome Message
 	if isFirstRun {
+		l.Info("First run detected, displaying welcome message")
 		ui.DisplayWelcomeMessage(os.Stdout)
 	}
 
 	// 5. Execute Command
 	if err := cmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		l.Error(fmt.Sprintf("Command execution failed: %v", err))
 		exitCode = 1
 	} else {
+		l.Debug("Command execution successful")
 		exitCode = 0
 	}
-	
-	panicOccurred = false
-	_ = panicOccurred // Silence unused variable warning if needed, but the defer handles it.
 }

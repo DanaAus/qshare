@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
+	"magshare/internal/logger"
 	"net/http"
 	"time"
 )
@@ -37,9 +37,12 @@ func (s *EphemeralServer) Handle(pattern string, handler http.HandlerFunc) {
 
 // Start runs the server and handles the timeout logic.
 func (s *EphemeralServer) Start(timeout time.Duration) error {
+	l := logger.WithComponent("server")
+	l.Debug(fmt.Sprintf("Starting server on %s", s.Server.Addr))
+
 	go func() {
 		if err := s.Server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Server error: %v", err)
+			l.Error(fmt.Sprintf("Server error: %v", err))
 		}
 	}()
 
@@ -47,10 +50,10 @@ func (s *EphemeralServer) Start(timeout time.Duration) error {
 	select {
 	case <-s.quitChan:
 		// Normal shutdown triggered by a handler
-		fmt.Println("\nStatus: Transfer complete. Shutting down server...")
+		l.Info("Transfer complete. Shutting down server...")
 	case <-time.After(timeout):
 		// Timeout reached
-		fmt.Println("\nStatus: Server timed out (5 minutes of inactivity). Shutting down...")
+		l.Warn("Server timed out (inactivity). Shutting down...")
 	}
 
 	return s.Shutdown()

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"magshare/internal/logger"
 	"magshare/internal/network"
 	"magshare/internal/server"
 	uiHelper "magshare/internal/ui"
@@ -28,10 +29,12 @@ type ReceiveOptions struct {
 
 // StartReceiveServer initializes the ephemeral server to receive files.
 func StartReceiveServer(destDir string, opts ReceiveOptions) error {
+	l := logger.WithComponent("receive")
+
 	// 1. Discover Network Interface and Port
 	ip, err := network.GetActiveIPv4Interface()
 	if err != nil {
-		fmt.Printf("[Warning] Could not auto-detect primary IP. Using 127.0.0.1. Error: %v\n", err)
+		l.Warn(fmt.Sprintf("Could not auto-detect primary IP. Using 127.0.0.1. Error: %v", err))
 		ip = "127.0.0.1"
 	}
 
@@ -65,14 +68,15 @@ func StartReceiveServer(destDir string, opts ReceiveOptions) error {
 	}
 
 	// Output Info
-	fmt.Printf("[Network] Using active interface: %s\n", displayIP)
-	fmt.Printf("[Server]  Dropzone started on port %d\n", port)
+	l.Info(fmt.Sprintf("Using active interface: %s", displayIP))
+	l.Info(fmt.Sprintf("Dropzone started on port %d", port))
 	if opts.Secure {
-		fmt.Printf("[Auth]    PIN REQUIRED: %s\n", pin)
+		l.Info(fmt.Sprintf("PIN REQUIRED: %s", pin))
 	}
-	fmt.Printf("[URL]     %s\n", displayURL)
+	l.Info(fmt.Sprintf("Upload URL: %s", displayURL))
 
 	// Print QR
+	l.Debug("Generating QR code...")
 	fmt.Println("[QR]")
 	qrterminal.GenerateHalfBlock(displayURL, qrterminal.L, os.Stdout)
 
@@ -100,7 +104,7 @@ func StartReceiveServer(destDir string, opts ReceiveOptions) error {
 
 		w.Header().Set("Content-Type", "text/html")
 		if err := tmpl.Execute(w, data); err != nil {
-			fmt.Printf("[Error] Failed to render UI: %v\n", err)
+			l.Error(fmt.Sprintf("Failed to render UI: %v", err))
 		}
 	})
 
@@ -115,7 +119,7 @@ func StartReceiveServer(destDir string, opts ReceiveOptions) error {
 		ReceiveFileWithProgress(w, r, destDir, opts.Secure, pin)
 	})
 
-	fmt.Println("\nStatus: Ready to receive files... Press Ctrl+C to stop. (timeout 5m)")
+	l.Info("Ready to receive files... Press Ctrl+C to stop. (timeout 5m)")
 
 	// 5. Start Server with 5-minute timeout
 	return srv.Start(5 * time.Minute)
@@ -123,6 +127,8 @@ func StartReceiveServer(destDir string, opts ReceiveOptions) error {
 
 // ReceiveFileWithProgress handles file upload with progress bar.
 func ReceiveFileWithProgress(w http.ResponseWriter, r *http.Request, destDir string, secure bool, expectedPin string) {
+	l := logger.WithComponent("receive")
+
 	// 1. Wrap Body for Progress
 	contentLength := r.ContentLength
 	bar := uiHelper.NewProgressBar(contentLength, "Receiving Upload")
@@ -158,7 +164,7 @@ func ReceiveFileWithProgress(w http.ResponseWriter, r *http.Request, destDir str
 	}
 	defer file.Close()
 
-	fmt.Printf("\n[Server] Receiving file '%s' from %s\n", header.Filename, r.RemoteAddr)
+	l.Info(fmt.Sprintf("Receiving file '%s' from %s", header.Filename, r.RemoteAddr))
 
 	// Sanitize file name
 	sanitizedName := filepath.Base(header.Filename)
@@ -176,19 +182,19 @@ func ReceiveFileWithProgress(w http.ResponseWriter, r *http.Request, destDir str
 	dstPath := filepath.Join(destDir, sanitizedName)
 	dst, err := os.Create(dstPath)
 	if err != nil {
-		fmt.Printf("[Error] Failed to create file: %v\n", err)
+		l.Error(fmt.Sprintf("Failed to create file: %v", err))
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 	defer dst.Close()
 
 	if _, err := io.Copy(dst, file); err != nil {
-		fmt.Printf("[Error] Failed to save file: %v\n", err)
+		l.Error(fmt.Sprintf("Failed to save file: %v", err))
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Printf("[Success] Saved to %s\n", dstPath)
+	l.Info(fmt.Sprintf("Saved to %s", dstPath))
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("File received successfully"))
 }

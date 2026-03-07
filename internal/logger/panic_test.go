@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"bytes"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -21,15 +23,29 @@ func TestHandlePanic(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// We'll simulate a panic by calling HandlePanic manually in a way that it sees a recovery
-	// This is hard because recover() only works inside a defer.
-	// So we'll wrap it in a function.
+	// Capture what goes into the global logger
+	var buf bytes.Buffer
+	originalGlobal := GetGlobalLogger()
+	defer SetGlobalLogger(originalGlobal)
+
+	// Set global logger to write to BOTH the buffer and the file
+	// HandlePanic will also open the file directly for the stack trace
+	f, err := os.OpenFile(logPath, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
 	
+	SetGlobalLogger(&StructuredLogger{
+		Writer:    io.MultiWriter(&buf, f),
+		Component: "test",
+		PID:       1234,
+	})
+	f.Close() // Close it, HandlePanic opens it independently
+
 	finished := make(chan bool)
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
-				// This is what HandlePanic should do
 				HandlePanic(logPath, r)
 				finished <- true
 			}
@@ -39,17 +55,19 @@ func TestHandlePanic(t *testing.T) {
 
 	<-finished
 
-	// Verify log file contains the panic message
+	// Verify log file contains the panic message (from global logger Error call)
+	// AND the stack trace (from direct file write)
 	content, err := os.ReadFile(logPath)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !strings.Contains(string(content), "test panic") {
-		t.Errorf("Log file does not contain panic message. Content: %s", string(content))
+	contentStr := string(content)
+	if !strings.Contains(contentStr, "test panic") {
+		t.Errorf("Log file does not contain panic message. Content: %s", contentStr)
 	}
 	
-	if !strings.Contains(string(content), "STACK TRACE") {
+	if !strings.Contains(contentStr, "STACK TRACE") {
 		t.Error("Log file does not contain stack trace")
 	}
 }
