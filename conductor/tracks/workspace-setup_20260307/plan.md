@@ -45,7 +45,7 @@
 - [x] Task: Refactor `main.go` for integration 2dac42d
     - [ ] Update `main()` to use the new `internal/workspace`, `internal/logger`, and `HandlePanic` logic
     - [ ] Ensure proper ordering of initialization, logging setup, and panic deferment
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Crash Recovery and Exit Logic' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Crash Recovery and Exit Logic' (Protocol in workflow.md)
 
 ## Phase 5: Quality Assurance and Final Checks
 - [ ] Task: Final end-to-end manual verification
