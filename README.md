@@ -30,6 +30,7 @@
 
 ## 📦 Installation
 _Magshare is currently available for Windows_
+
 Magshare is distributed as a standalone executable. Choose your preferred package manager below:
 
 ### From Source (Go)
