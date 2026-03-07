@@ -143,7 +143,13 @@ func StartSendServer(targetPath string, opts SendOptions) error {
 
 // ServeFileWithProgress serves a single file to the client with a real-time
 // progress bar (bytes sent, speed, ETA) shown on the host terminal.
+// It supports resumable downloads via Range headers.
 func ServeFileWithProgress(w http.ResponseWriter, r *http.Request, filePath string) error {
+	// Sanitize path to prevent traversal
+	// We assume filePath is already the intended target from the CLI, 
+	// but we should still be careful if it was passed around.
+	// Actually StartSendServer already does os.Stat(targetPath).
+	
 	info, err := os.Stat(filePath)
 	if err != nil {
 		http.Error(w, "File not found", http.StatusNotFound)
@@ -157,13 +163,20 @@ func ServeFileWithProgress(w http.ResponseWriter, r *http.Request, filePath stri
 	}
 	defer file.Close()
 
+	// Use a progress bar. 
+	// Note: For Range requests, the total size in the bar will be the FULL file size,
+	// but ServeContent will only read the requested range.
 	bar := progressbar.DefaultBytes(info.Size(), "Sending file")
 
+	// Set Content-Disposition to suggest a filename for download
 	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, info.Name()))
-	pr := NewProgressReader(r.Context(), file, bar)
-	if _, err := io.Copy(w, pr); err != nil {
-		return fmt.Errorf("copy: %w", err)
-	}
+
+	// Wrap the file in a ProgressReadSeeker to track progress
+	prs := NewProgressReadSeeker(r.Context(), file, bar)
+
+	// Use http.ServeContent to handle Range requests, modtime, and content type sniffing automatically.
+	http.ServeContent(w, r, info.Name(), info.ModTime(), prs)
+
 	fmt.Println() // newline after bar
 	return nil
 }

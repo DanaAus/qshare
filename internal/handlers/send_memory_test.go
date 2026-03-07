@@ -72,10 +72,10 @@ func TestServeFileMemoryUsage(t *testing.T) {
 
 	done <- true
 
-	// 5. Assert Memory Usage
+	// Assert Memory Usage
 	// Max allocation should be significantly less than 500MB.
-	// We'll set a threshold of 50MB for the test environment overhead.
-	threshold := uint64(50 * 1024 * 1024) // 50MB
+	// We'll set a threshold of 20MB as per spec.
+	threshold := uint64(20 * 1024 * 1024) // 20MB
 	fmt.Printf("Peak Memory Allocation: %d MB\n", maxAlloc/1024/1024)
 
 	if maxAlloc > threshold {

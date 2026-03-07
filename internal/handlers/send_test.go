@@ -48,11 +48,25 @@ func TestServeFileWithProgress(t *testing.T) {
 
 	// Check body
 	if rr.Body.String() != string(content) {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), string(content))
+	        t.Errorf("handler returned unexpected body: got %v want %v",
+	                rr.Body.String(), string(content))
 	}
-}
 
+	t.Run("Range Request", func(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/download", nil)
+	req.Header.Set("Range", "bytes=0-4") // Should get "Hello"
+	rr := httptest.NewRecorder()
+
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusPartialContent {
+	t.Errorf("expected 206 Partial Content, got %d", rr.Code)
+	}
+	if rr.Body.String() != "Hello" {
+	t.Errorf("expected 'Hello', got %q", rr.Body.String())
+	}
+	})
+	}
 func TestServeDirWithProgress(t *testing.T) {
 	// Create a dummy dir
 	tmpdir, err := os.MkdirTemp("", "example_dir")
