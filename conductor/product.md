@@ -16,6 +16,7 @@ The primary users are everyday users and cross-device users who need a quick and
 *   **Bi-directional Sharing:** Support both sending files from the host to a client and receiving files from a client to the host via a web-based "Dropzone."
 *   **TUI/Interactive Mode:** Provide a guided, prompt-based terminal user interface (using the Charmbracelet stack) for configuration.
 *   **Secure Mode:** Optional PIN-based authentication for sensitive transfers.
+*   **Flexible Configuration:** Explicitly customize ports and security PINs via terminal flags or the interactive UI.
 *   **Memory-Efficient Streaming:** Direct-to-disk streaming for ultra-large files (10GB+), maintaining a low memory footprint (under 20MB).
 
 ## Technical Constraints
