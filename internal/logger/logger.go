@@ -65,3 +65,11 @@ func SetupLogging(logsDir string) (string, func(), error) {
 
 	return logPath, cleanup, nil
 }
+
+// CleanupLogs deletes the log file at the specified path.
+func CleanupLogs(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil
+	}
+	return os.Remove(path)
+}
