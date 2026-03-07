@@ -7,7 +7,7 @@
     - [ ] Write unit tests to verify the new struct and JSON serialization.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Config Struct Update' (Protocol in workflow.md) 5ec3b5c
 
-## Phase 2: Interactive Setup Implementation
+## Phase 2: Interactive Setup Implementation [checkpoint: 37166d7]
 - [x] Task: Create `internal/ui/setup.go` e1d1e03
     - [ ] Implement `RunFirstRunSetup()` using `huh`.
     - [ ] Logic:
@@ -17,7 +17,7 @@
         - Validation logic for the path (absolute, writable).
 - [x] Task: Write tests/mocks for the setup logic 6bd27d7
     - [ ] Since TUIs are hard to unit test, focus on validating the path-checking logic in a separate utility.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Interactive Setup Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Interactive Setup Implementation' (Protocol in workflow.md) 37166d7
 
 ## Phase 3: Integration into Initialization
 - [ ] Task: Update `internal/workspace/init.go`
