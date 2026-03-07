@@ -17,7 +17,7 @@
     - [ ] Ensure it correctly interacts with the existing `progressbar` library.
 - [ ] Task: Write unit tests for `ProgressReadSeeker`
     - [ ] Verify that seeking doesn't break the reader and that progress is tracked correctly after seeks.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Progress ReadSeeker' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Progress ReadSeeker' (Protocol in workflow.md)
 
 ## Phase 3: Refactor File Serving
 - [ ] Task: Refactor `ServeFileWithProgress` in `internal/handlers/send.go`
