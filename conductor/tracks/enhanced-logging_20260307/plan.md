@@ -30,7 +30,7 @@
 - [x] Task: Refactor Crash Recovery integration 7f18d55
     - [ ] Update `HandlePanic()` to use the new formatting for the crash report header
     - [ ] Ensure the stack trace is still captured clearly within the formatted log
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration and Refactoring' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Integration and Refactoring' (Protocol in workflow.md)
 
 ## Phase 4: Validation and Quality Assurance
 - [ ] Task: Verify >80% code coverage for the new logging system
