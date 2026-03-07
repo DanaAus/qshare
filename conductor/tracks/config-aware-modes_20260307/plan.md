@@ -29,8 +29,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Subcommand and Interactive Mode Update' (Protocol in workflow.md) b2d87bc
 
 ## Phase 4: Final Validation
-- [ ] Task: End-to-end manual verification
+- [x] Task: End-to-end manual verification (manual)
     - [ ] Set `secure_mode: true` in config, run `send` without flags, verify PIN is required.
     - [ ] Run `send --secure=false`, verify PIN is NOT required.
     - [ ] Verify `receive` uses the setup download directory.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Validation' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Final Validation' (Protocol in workflow.md)
