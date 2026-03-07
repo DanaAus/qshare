@@ -11,7 +11,7 @@
     - [ ] Write unit tests to verify the string output matches the spec example
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Core Logger Implementation' (Protocol in workflow.md) 4720e3c
 
-## Phase 2: Hybrid Output and Filtering
+## Phase 2: Hybrid Output and Filtering [checkpoint: dde475d]
 - [x] Task: Implement Filtered Multi-Writer d39f0fd
     - [ ] Create a `FilteredWriter` that wraps an `io.Writer` and only writes if the `LogLevel` meets a threshold
     - [ ] Update `SetupLogging()` to use this `FilteredWriter` for `os.Stdout` (Threshold: INFO)
@@ -20,7 +20,7 @@
 - [x] Task: Update the global singleton logger d39f0fd
     - [ ] Provide global helper functions like `logger.Info(component, msg)`, `logger.Debug(component, msg)`, etc.
     - [ ] Ensure thread safety using `sync.Mutex` or by utilizing `log.Logger` as the underlying engine
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Hybrid Output and Filtering' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Hybrid Output and Filtering' (Protocol in workflow.md) dde475d
 
 ## Phase 3: Integration and Refactoring
 - [ ] Task: Replace raw `fmt.Print` calls with the new Logger
