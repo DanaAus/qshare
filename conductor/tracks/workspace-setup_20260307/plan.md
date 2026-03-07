@@ -34,7 +34,7 @@
 - [x] Task: Implement session cleanup on success 660c2d9
     - [ ] Add `CleanupLogs(tempLogPath string)` function to delete the temporary file on normal exit
     - [ ] Write unit tests to verify file deletion after a successful run simulation
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Output Redirection and Logging' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Output Redirection and Logging' (Protocol in workflow.md)
 
 ## Phase 4: Crash Recovery and Exit Logic
 - [ ] Task: Implement Panic handling with `defer` and `recover`
