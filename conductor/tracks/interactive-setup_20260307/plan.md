@@ -1,11 +1,11 @@
 # Implementation Plan: Interactive First-Run Setup
 
-## Phase 1: Config Struct Update
+## Phase 1: Config Struct Update [checkpoint: 5ec3b5c]
 - [x] Task: Update `internal/workspace/config.go` 10dc16f
     - [ ] Add `DownloadDir` string field to the `Config` struct.
     - [ ] Update `CreateDefaultConfig` to accept a `Config` object instead of creating a fixed one.
     - [ ] Write unit tests to verify the new struct and JSON serialization.
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Config Struct Update' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Config Struct Update' (Protocol in workflow.md) 5ec3b5c
 
 ## Phase 2: Interactive Setup Implementation
 - [ ] Task: Create `internal/ui/setup.go`
