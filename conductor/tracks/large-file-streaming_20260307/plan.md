@@ -1,11 +1,11 @@
 # Implementation Plan: Resumable & Secure Large File Streaming
 
-## Phase 1: Security and Path Utilities
+## Phase 1: Security and Path Utilities [checkpoint: 15dbb1f]
 - [x] Task: Implement Path Security Utilities b4b0079
     - [ ] Create `internal/handlers/security.go`
     - [ ] Add `SanitizePath(base, target string) (string, error)` to resolve the absolute path and ensure the target is within or equal to the intended base.
     - [ ] Write unit tests to verify traversal prevention.
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Security and Path Utilities' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Security and Path Utilities' (Protocol in workflow.md) 15dbb1f
 
 ## Phase 2: Progress ReadSeeker
 - [ ] Task: Implement `ProgressReadSeeker`
