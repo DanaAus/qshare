@@ -9,6 +9,7 @@ import (
 )
 
 // SetupLogging redirects os.Stdout and os.Stderr to both the terminal and a log file.
+// It also configures the global structured logger.
 // It returns the path to the log file and a cleanup function to restore originals.
 func SetupLogging(logsDir string) (string, func(), error) {
 	// Generate filename
@@ -25,7 +26,25 @@ func SetupLogging(logsDir string) (string, func(), error) {
 	originalStdout := os.Stdout
 	originalStderr := os.Stderr
 
-	// Create pipes
+	// Create filtered writers for terminal (INFO+) and file (DEBUG+)
+	termWriter := &FilteredWriter{Writer: originalStdout, Threshold: INFO}
+	fileWriter := &FilteredWriter{Writer: logFile, Threshold: DEBUG}
+
+	// For stderr, we might want to always show errors in terminal
+	termErrWriter := &FilteredWriter{Writer: originalStderr, Threshold: INFO}
+
+	// Create MultiLeveledWriters for internal use
+	outMLW := &MultiLeveledWriter{Writers: []LeveledWriter{termWriter, fileWriter}}
+	errMLW := &MultiLeveledWriter{Writers: []LeveledWriter{termErrWriter, fileWriter}}
+
+	// Configure Global Structured Logger
+	SetGlobalLogger(&StructuredLogger{
+		Writer:    outMLW,
+		Component: "main",
+		PID:       os.Getpid(),
+	})
+
+	// Setup Pipe redirection for raw fmt.Print and third-party libs
 	outR, outW, _ := os.Pipe()
 	errR, errW, _ := os.Pipe()
 
@@ -36,13 +55,13 @@ func SetupLogging(logsDir string) (string, func(), error) {
 	// Start copying in goroutines
 	done := make(chan bool)
 	go func() {
-		mw := io.MultiWriter(originalStdout, logFile)
-		io.Copy(mw, outR)
+		// Raw writes to stdout are treated as INFO
+		io.Copy(outMLW, outR)
 		done <- true
 	}()
 	go func() {
-		mw := io.MultiWriter(originalStderr, logFile)
-		io.Copy(mw, errR)
+		// Raw writes to stderr are treated as INFO
+		io.Copy(errMLW, errR)
 		done <- true
 	}()
 

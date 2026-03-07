@@ -39,6 +39,7 @@ type Logger interface {
 	Info(msg string)
 	Warn(msg string)
 	Error(msg string)
+	WithComponent(component string) Logger
 }
 
 // StructuredLogger implements the Logger interface with formatted output.
@@ -48,10 +49,25 @@ type StructuredLogger struct {
 	PID       int
 }
 
+// WithComponent returns a new logger with the specified component name.
+func (l *StructuredLogger) WithComponent(component string) Logger {
+	return &StructuredLogger{
+		Writer:    l.Writer,
+		Component: component,
+		PID:       l.PID,
+	}
+}
+
 // Log writes a message at the specified level.
 func (l *StructuredLogger) Log(level LogLevel, msg string) {
 	timestamp := time.Now().Format("2006-01-02 15:04:05")
-	fmt.Fprintf(l.Writer, "[%s] [%s] [%s] [%d] %s\n", timestamp, level, l.Component, l.PID, msg)
+	formatted := fmt.Sprintf("[%s] [%s] [%s] [%d] %s\n", timestamp, level, l.Component, l.PID, msg)
+	
+	if lw, ok := l.Writer.(LeveledWriter); ok {
+		lw.WriteLevel(level, []byte(formatted))
+	} else {
+		fmt.Fprint(l.Writer, formatted)
+	}
 }
 
 func (l *StructuredLogger) Debug(msg string) { l.Log(DEBUG, msg) }
