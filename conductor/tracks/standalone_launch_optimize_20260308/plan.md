@@ -6,11 +6,11 @@ This plan focuses on enhancing the interactive mode into a persistent loop and a
 - [x] Task: Refactor `RunInteractivePrompts` for exit option (55f17f8)
     - [x] Add an "Exit" option to the action selection menu in `internal/ui/interactive.go`.
     - [x] Update `InteractiveConfig` to handle the "exit" action.
-- [ ] Task: Refactor `rootCmd` for looping
-    - [ ] Modify `cmd/root.go`'s `RunE` function.
-    - [ ] Wrap the `ui.RunInteractivePrompts` call in an infinite loop.
-    - [ ] Break the loop if the action is "exit" or if an unrecoverable error occurs.
-    - [ ] Log action completions and return to menu.
+- [x] Task: Refactor `rootCmd` for looping (5179163)
+    - [x] Modify `cmd/root.go`'s `RunE` function.
+    - [x] Wrap the `ui.RunInteractivePrompts` call in an infinite loop.
+    - [x] Break the loop if the action is "exit" or if an unrecoverable error occurs.
+    - [x] Log action completions and return to menu.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Main Menu Loop' (Protocol in workflow.md)
 
 ## Phase 2: Shortcut Creation
