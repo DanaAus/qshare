@@ -24,43 +24,62 @@ var rootCmd = &cobra.Command{
 	Short: "MagShare is an instant local network file sharing tool",
 	Long:  `MagShare allows you to instantly share and receive files across your local network. It spawns ephemeral web servers and provides QR codes for easy access.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		// If no subcommand is provided, run interactive mode
-		cfg, err := ui.RunInteractivePrompts(demoMode, appConfig.Port, appConfig.DownloadDir, appConfig.SecureMode)
-		if err != nil {
-			if err.Error() == "user cancelled" {
+		l := logger.WithComponent("interactive")
+
+		for {
+			// If no subcommand is provided, run interactive mode
+			cfg, err := ui.RunInteractivePrompts(demoMode, appConfig.Port, appConfig.DownloadDir, appConfig.SecureMode)
+			if err != nil {
+				if err.Error() == "user cancelled" {
+					return nil
+				}
+				return err
+			}
+
+			if cfg.Action == "exit" {
 				return nil
 			}
-			return err
-		}
 
-		// Override interactive values if flags are provided
-		if portFlag > 0 {
-			cfg.Port = portFlag
-		}
-		if pinFlag != "" {
-			cfg.PIN = pinFlag
-			cfg.Secure = true
-		}
+			// Override interactive values if flags are provided (only on first loop iteration if we want to be strict, but here we just apply them)
+			if portFlag > 0 {
+				cfg.Port = portFlag
+			}
+			if pinFlag != "" {
+				cfg.PIN = pinFlag
+				cfg.Secure = true
+			}
 
-		switch cfg.Action {
-		case "send":
-			opts := handlers.SendOptions{
-				Port:   cfg.Port,
-				Secure: cfg.Secure,
-				PIN:    cfg.PIN,
-				Demo:   demoMode,
+			var actionErr error
+			switch cfg.Action {
+			case "send":
+				opts := handlers.SendOptions{
+					Port:   cfg.Port,
+					Secure: cfg.Secure,
+					PIN:    cfg.PIN,
+					Demo:   demoMode,
+				}
+				actionErr = handlers.StartSendServer(cfg.Path, opts)
+			case "receive":
+				opts := handlers.ReceiveOptions{
+					Port:   cfg.Port,
+					Secure: cfg.Secure,
+					PIN:    cfg.PIN,
+					Demo:   demoMode,
+				}
+				actionErr = handlers.StartReceiveServer(cfg.Path, opts)
+			default:
+				return cmd.Help()
 			}
-			return handlers.StartSendServer(cfg.Path, opts)
-		case "receive":
-			opts := handlers.ReceiveOptions{
-				Port:   cfg.Port,
-				Secure: cfg.Secure,
-				PIN:    cfg.PIN,
-				Demo:   demoMode,
+
+			if actionErr != nil {
+				l.Error(fmt.Sprintf("Action failed: %v", actionErr))
+				fmt.Printf("\nError: %v\nPress Enter to return to menu...", actionErr)
+				fmt.Scanln()
+			} else {
+				l.Info(fmt.Sprintf("Action '%s' completed successfully", cfg.Action))
+				fmt.Println("\nOperation completed. Press Enter to return to menu...")
+				fmt.Scanln()
 			}
-			return handlers.StartReceiveServer(cfg.Path, opts)
-		default:
-			return cmd.Help()
 		}
 	},
 }
