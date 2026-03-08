@@ -13,7 +13,7 @@ This plan focuses on enhancing the interactive mode into a persistent loop and a
     - [x] Log action completions and return to menu.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Main Menu Loop' (Protocol in workflow.md) (eab6a3d)
 
-## Phase 2: Shortcut Creation
+## Phase 2: Shortcut Creation [checkpoint: 92e445f]
 - [x] Task: Implement Windows Shortcut Logic (33a8916)
     - [x] Create `internal/workspace/shortcut_windows.go` with `//go:build windows`.
     - [x] Implement `CreateDesktopShortcut()` using a shell-based approach (e.g., `WScript.Shell` via `os/exec` or a library).
@@ -21,7 +21,7 @@ This plan focuses on enhancing the interactive mode into a persistent loop and a
 - [x] Task: Add `--shortcut` flag to `integrate` command (92e445f)
     - [x] Update `cmd/integrate.go` to include the `shortcutFlag`.
     - [x] Integrate with `workspace.CreateDesktopShortcut()` and provide terminal feedback.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Shortcut Creation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Shortcut Creation' (Protocol in workflow.md) (92e445f)
 
 ## Phase 3: Final Integration and Testing
 - [ ] Task: Verify standalone vs CLI behavior
