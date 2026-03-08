@@ -21,7 +21,7 @@ This plan focuses on investigating the execution guard that blocks context menu 
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Context Menu Compatibility' (Protocol in workflow.md) (bd2152c)
 
 ## Phase 3: Final Verification
-- [ ] Task: End-to-End Test
-    - [ ] Manually register the context menu (if not already done).
-    - [ ] Right-click a file and verify Magshare starts the send server without the error message.
+- [x] Task: End-to-End Test (bd2152c)
+    - [x] Manually register the context menu (if not already done).
+    - [x] Right-click a file and verify Magshare starts the send server without the error message.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
