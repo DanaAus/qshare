@@ -40,6 +40,7 @@ func RunInteractivePrompts(demo bool, defaultPort int, defaultPath string, defau
 				Options(
 					huh.NewOption("Send File/Folder", "send"),
 					huh.NewOption("Receive File", "receive"),
+					huh.NewOption("Exit", "exit"),
 				).
 				Value(&cfg.Action),
 		),
@@ -51,6 +52,10 @@ func RunInteractivePrompts(demo bool, defaultPort int, defaultPath string, defau
 			return nil, fmt.Errorf("user cancelled")
 		}
 		return nil, fmt.Errorf("action selection failed: %w", err)
+	}
+
+	if cfg.Action == "exit" {
+		return cfg, nil
 	}
 
 	// 2. Configure Action
