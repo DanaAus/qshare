@@ -31,7 +31,7 @@ func RunFirstRunSetup() (*SetupResult, error) {
 		ShellIntegration: true, // Default to true on Windows
 	}
 
-	group := huh.NewGroup(
+	fields := []huh.Field{
 		huh.NewInput().
 			Title("Download Location").
 			Description("Where should received files be saved?").
@@ -50,11 +50,11 @@ func RunFirstRunSetup() (*SetupResult, error) {
 			Title("Default Security").
 			Description("Enable PIN security by default for all future transfers?").
 			Value(&result.SecureMode),
-	)
+	}
 
 	// Add Windows-specific integration prompt
 	if runtime.GOOS == "windows" {
-		group.Append(
+		fields = append(fields,
 			huh.NewConfirm().
 				Title("Explorer Integration").
 				Description("Enable Windows Explorer integration? (Adds 'Share via Magshare' to right-click menu)").
@@ -62,7 +62,7 @@ func RunFirstRunSetup() (*SetupResult, error) {
 		)
 	}
 
-	form := huh.NewForm(group).WithTheme(huh.ThemeCharm())
+	form := huh.NewForm(huh.NewGroup(fields...)).WithTheme(huh.ThemeCharm())
 
 	err = form.Run()
 	if err != nil {

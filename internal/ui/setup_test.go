@@ -20,13 +20,17 @@ func TestDefaultDownloadDir(t *testing.T) {
 
 func TestSetupResultStructure(t *testing.T) {
 	result := &SetupResult{
-		DownloadDir: "/tmp/magshare",
-		SecureMode:  true,
+		DownloadDir:      "/tmp/magshare",
+		SecureMode:       true,
+		ShellIntegration: true,
 	}
 	if result.DownloadDir != "/tmp/magshare" {
 		t.Error("DownloadDir not set correctly")
 	}
 	if !result.SecureMode {
 		t.Error("SecureMode not set correctly")
+	}
+	if !result.ShellIntegration {
+		t.Error("ShellIntegration not set correctly")
 	}
 }
