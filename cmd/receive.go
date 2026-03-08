@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"magshare/internal/handlers"
 
 	"github.com/spf13/cobra"
@@ -15,7 +13,7 @@ var (
 var receiveCmd = &cobra.Command{
 	Use:   "receive",
 	Short: "Start a dropzone server to receive files",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		opts := handlers.ReceiveOptions{
 			Port:   portFlag,
 			Secure: receiveSecure,
@@ -37,9 +35,7 @@ var receiveCmd = &cobra.Command{
 
 		path := appConfig.DownloadDir
 
-		if err := handlers.StartReceiveServer(path, opts); err != nil {
-			log.Fatalf("\n[Error] %v\n", err)
-		}
+		return handlers.StartReceiveServer(path, opts)
 	},
 }
 

@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"magshare/internal/handlers"
 
 	"github.com/spf13/cobra"
@@ -16,7 +14,7 @@ var sendCmd = &cobra.Command{
 	Use:   "send [file or directory]",
 	Short: "Send a file or directory over the local network",
 	Args:  cobra.ExactArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		path := args[0]
 
 		opts := handlers.SendOptions{
@@ -38,9 +36,7 @@ var sendCmd = &cobra.Command{
 			opts.Secure = true
 		}
 
-		if err := handlers.StartSendServer(path, opts); err != nil {
-			log.Fatalf("\n[Error] %v\n", err)
-		}
+		return handlers.StartSendServer(path, opts)
 	},
 }
 
