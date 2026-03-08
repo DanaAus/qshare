@@ -25,8 +25,8 @@ This plan follows the TDD workflow and includes platform-specific conditional lo
 - [x] Task: Conductor - User Manual Verification 'Phase 2: CLI Command integrate' (Protocol in workflow.md) (7aea748)
 
 ## Phase 3: Robustness and Finalization
-- [ ] Task: Verify end-to-end flow
-    - [ ] Run first-run setup on Windows and verify menu appears.
-    - [ ] Use CLI to uninstall and verify menu disappears.
-    - [ ] Verify clicking the menu option launches `magshare send`.
+- [x] Task: Verify end-to-end flow (7aea748)
+    - [x] Run first-run setup on Windows and verify menu appears.
+    - [x] Use CLI to uninstall and verify menu disappears.
+    - [x] Verify clicking the menu option launches `magshare send`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Robustness and Finalization' (Protocol in workflow.md)
