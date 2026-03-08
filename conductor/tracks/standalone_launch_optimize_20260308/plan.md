@@ -3,9 +3,9 @@
 This plan focuses on enhancing the interactive mode into a persistent loop and adding Windows shortcut functionality.
 
 ## Phase 1: Main Menu Loop
-- [ ] Task: Refactor `RunInteractivePrompts` for exit option
-    - [ ] Add an "Exit" option to the action selection menu in `internal/ui/interactive.go`.
-    - [ ] Update `InteractiveConfig` to handle the "exit" action.
+- [x] Task: Refactor `RunInteractivePrompts` for exit option (55f17f8)
+    - [x] Add an "Exit" option to the action selection menu in `internal/ui/interactive.go`.
+    - [x] Update `InteractiveConfig` to handle the "exit" action.
 - [ ] Task: Refactor `rootCmd` for looping
     - [ ] Modify `cmd/root.go`'s `RunE` function.
     - [ ] Wrap the `ui.RunInteractivePrompts` call in an infinite loop.
