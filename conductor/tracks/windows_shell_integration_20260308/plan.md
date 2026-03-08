@@ -2,7 +2,7 @@
 
 This plan follows the TDD workflow and includes platform-specific conditional logic.
 
-## Phase 1: Config Extension and Onboarding
+## Phase 1: Config Extension and Onboarding [checkpoint: 7e6c027]
 - [x] Task: Update `workspace.Config` struct (ed9ffdd)
     - [x] Add `ShellIntegration bool` to `Config` in `internal/workspace/config.go`.
     - [x] Update `config_test.go` to ensure JSON serialization works.
@@ -10,7 +10,7 @@ This plan follows the TDD workflow and includes platform-specific conditional lo
     - [x] Update `ui.SetupResult` and `ui.RunFirstRunSetup` in `internal/ui/setup.go` to include the integration prompt.
     - [x] Add platform check (`runtime.GOOS == "windows"`) to show/hide the prompt.
     - [x] Update `main.go` to call `workspace.RegisterContextMenu()` if the user opts-in during setup.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Config Extension and Onboarding' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Config Extension and Onboarding' (Protocol in workflow.md) (7e6c027)
 
 ## Phase 2: CLI Command 'integrate'
 - [ ] Task: Scaffolding for `integrate` command
