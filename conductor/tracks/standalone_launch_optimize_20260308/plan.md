@@ -18,9 +18,9 @@ This plan focuses on enhancing the interactive mode into a persistent loop and a
     - [x] Create `internal/workspace/shortcut_windows.go` with `//go:build windows`.
     - [x] Implement `CreateDesktopShortcut()` using a shell-based approach (e.g., `WScript.Shell` via `os/exec` or a library).
     - [x] Create stubs for other platforms in `internal/workspace/shortcut_stub.go`.
-- [ ] Task: Add `--shortcut` flag to `integrate` command
-    - [ ] Update `cmd/integrate.go` to include the `shortcutFlag`.
-    - [ ] Integrate with `workspace.CreateDesktopShortcut()` and provide terminal feedback.
+- [x] Task: Add `--shortcut` flag to `integrate` command (92e445f)
+    - [x] Update `cmd/integrate.go` to include the `shortcutFlag`.
+    - [x] Integrate with `workspace.CreateDesktopShortcut()` and provide terminal feedback.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Shortcut Creation' (Protocol in workflow.md)
 
 ## Phase 3: Final Integration and Testing
