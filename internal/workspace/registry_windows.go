@@ -12,6 +12,13 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
+// For testing purposes
+var (
+	registryCreateKey = registry.CreateKey
+	registryOpenKey   = registry.OpenKey
+	registryDeleteKey = registry.DeleteKey
+)
+
 // RegisterContextMenu adds 'Share via Magshare' to the Windows right-click menu for files and directories.
 func RegisterContextMenu() error {
 	log := logger.WithComponent("registry")
@@ -41,7 +48,7 @@ func RegisterContextMenu() error {
 
 	for _, target := range targets {
 		// Create/Open the shell key
-		key, _, err := registry.CreateKey(registry.CURRENT_USER, target, registry.ALL_ACCESS)
+		key, _, err := registryCreateKey(registry.CURRENT_USER, target, registry.ALL_ACCESS)
 		if err != nil {
 			err = fmt.Errorf("failed to create registry key %s: %w", target, err)
 			log.Error(err.Error())
@@ -56,7 +63,7 @@ func RegisterContextMenu() error {
 		}
 
 		// Create/Open the command subkey
-		cmdKey, _, err := registry.CreateKey(key, "command", registry.ALL_ACCESS)
+		cmdKey, _, err := registryCreateKey(key, "command", registry.ALL_ACCESS)
 		key.Close() // Close parent
 		if err != nil {
 			err = fmt.Errorf("failed to create command key for %s: %w", target, err)
@@ -89,7 +96,7 @@ func UnregisterContextMenu() error {
 
 	for _, target := range targets {
 		// First, delete the "command" subkey
-		err := registry.DeleteKey(registry.CURRENT_USER, target+`\command`)
+		err := registryDeleteKey(registry.CURRENT_USER, target+`\command`)
 		if err != nil && err != registry.ErrNotExist {
 			log.Warn(fmt.Sprintf("failed to delete command key for %s: %v", target, err))
 		}
@@ -102,7 +109,7 @@ func UnregisterContextMenu() error {
 		parentPath := target[:lastSlash]
 		childName := target[lastSlash+1:]
 
-		parentKey, err := registry.OpenKey(registry.CURRENT_USER, parentPath, registry.ALL_ACCESS)
+		parentKey, err := registryOpenKey(registry.CURRENT_USER, parentPath, registry.ALL_ACCESS)
 		if err != nil {
 			if err != registry.ErrNotExist {
 				log.Warn(fmt.Errorf("failed to open parent key %s: %w", parentPath, err).Error())
@@ -110,7 +117,7 @@ func UnregisterContextMenu() error {
 			continue
 		}
 		
-		err = registry.DeleteKey(parentKey, childName)
+		err = registryDeleteKey(parentKey, childName)
 		parentKey.Close()
 		if err != nil && err != registry.ErrNotExist {
 			log.Warn(fmt.Sprintf("failed to delete registry key %s: %v", target, err))
