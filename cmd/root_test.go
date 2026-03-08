@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"magshare/internal/workspace"
+
+	"github.com/spf13/cobra"
 )
 
 func TestDemoFlag(t *testing.T) {
@@ -72,6 +74,12 @@ func TestCommandPrecedence(t *testing.T) {
 	// Let's at least verify that appConfig is accessible and correct.
 	if appConfig.DownloadDir != "/tmp/config-dir" {
 		t.Errorf("expected /tmp/config-dir, got %s", appConfig.DownloadDir)
+	}
+}
+
+func TestMousetrapDisabled(t *testing.T) {
+	if cobra.MousetrapHelpText != "" {
+		t.Errorf("expected MousetrapHelpText to be empty, got %q", cobra.MousetrapHelpText)
 	}
 }
 
