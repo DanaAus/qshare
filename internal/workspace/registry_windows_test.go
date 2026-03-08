@@ -76,3 +76,30 @@ func TestRegisterContextMenu(t *testing.T) {
 	// Clean up after test
 	_ = UnregisterContextMenu()
 }
+
+func TestUnregisterContextMenu(t *testing.T) {
+	err := RegisterContextMenu()
+	if err != nil {
+		t.Fatalf("RegisterContextMenu() returned error: %v", err)
+	}
+
+	err = UnregisterContextMenu()
+	if err != nil {
+		t.Errorf("UnregisterContextMenu() returned error: %v", err)
+	}
+
+	targets := []string{
+		`Software\Classes\*\shell\Magshare`,
+		`Software\Classes\Directory\shell\Magshare`,
+	}
+
+	for _, target := range targets {
+		t.Run(target, func(t *testing.T) {
+			key, err := registry.OpenKey(registry.CURRENT_USER, target, registry.QUERY_VALUE)
+			if err == nil {
+				key.Close()
+				t.Errorf("registry key %s still exists after unregistration", target)
+			}
+		})
+	}
+}
