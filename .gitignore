@@ -1,0 +1,32 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test outputs
+*_out.txt
+test_output*.txt
+test.txt
+
+# Media (Embedded in README via Base64)
+media/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Package Managers
+winget/
+scoop/
+
+# Conductor & Gemini
+conductor/
+GEMINI.md
+embed_gif.py
+magshare.exe

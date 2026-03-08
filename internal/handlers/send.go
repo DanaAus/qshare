@@ -1,0 +1,232 @@
+package handlers
+
+import (
+	"archive/zip"
+	"fmt"
+	"html/template"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"time"
+
+	"magshare/internal/logger"
+	"magshare/internal/network"
+	"magshare/internal/server"
+	"magshare/ui"
+
+	"github.com/mdp/qrterminal/v3"
+	"github.com/schollz/progressbar/v3"
+)
+
+// SendOptions defines configuration for the send server.
+type SendOptions struct {
+	Port   int
+	Secure bool
+	PIN    string
+	Demo   bool
+}
+
+// StartSendServer initializes the ephemeral server and handles file sending.
+func StartSendServer(targetPath string, opts SendOptions) error {
+	l := logger.WithComponent("send")
+
+	// 1. Check if path exists
+	info, err := os.Stat(targetPath)
+	if err != nil {
+		return fmt.Errorf("target path not found: %w", err)
+	}
+
+	// 2. Discover Network Interface and Port
+	ip, err := network.GetActiveIPv4Interface()
+	if err != nil {
+		l.Warn(fmt.Sprintf("Could not auto-detect primary IP. Using 127.0.0.1. Error: %v", err))
+		ip = "127.0.0.1"
+	}
+
+	port := opts.Port
+	if port <= 0 {
+		port, err = network.GetAvailablePort()
+		if err != nil {
+			return fmt.Errorf("could not find open port: %w", err)
+		}
+	}
+
+	// 3. Generate secure download URL
+	hash, err := network.GenerateRandomString(6) // 12-char hex
+	if err != nil {
+		return err
+	}
+
+	downloadPath := fmt.Sprintf("/d/%s", hash)
+	downloadURL := fmt.Sprintf("http://%s:%d%s", ip, port, downloadPath)
+
+	// Demo Mode Faking for Display
+	displayIP := network.GetDisplayIP(ip, opts.Demo)
+	displayURL := network.GetDisplayURL(downloadURL, opts.Demo)
+
+	// Output Info
+	l.Info(fmt.Sprintf("Using active interface: %s", displayIP))
+	l.Info(fmt.Sprintf("Started on port %d", port))
+	if opts.Secure {
+		if opts.PIN == "" {
+			opts.PIN, _ = server.GeneratePIN()
+		}
+		l.Info(fmt.Sprintf("PIN REQUIRED: %s", opts.PIN))
+	}
+	l.Info(fmt.Sprintf("Share URL: %s", displayURL))
+
+	// Print QR
+	l.Debug("Generating QR code...")
+	fmt.Println("[QR]")
+	qrterminal.GenerateHalfBlock(displayURL, qrterminal.L, os.Stdout)
+
+	// 4. Setup Server
+	srv := server.NewEphemeralServer(port)
+
+	srv.Handle(downloadPath, func(w http.ResponseWriter, r *http.Request) {
+		// Only allow GET
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Check PIN if secure mode is enabled
+		if opts.Secure {
+			clientPin := r.URL.Query().Get("pin")
+			if clientPin != opts.PIN {
+				// Serve PIN entry page instead of raw error
+				tmpl, err := template.ParseFS(ui.Files, "pin.html")
+				if err != nil {
+					http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+					return
+				}
+
+				data := struct {
+					Error string
+				}{}
+				if clientPin != "" {
+					data.Error = "Invalid PIN. Please try again."
+				}
+
+				w.Header().Set("Content-Type", "text/html")
+				tmpl.Execute(w, data)
+				return
+			}
+		}
+
+		l.Info(fmt.Sprintf("Connection established from %s", r.RemoteAddr))
+
+		var serveErr error
+		if info.IsDir() {
+			serveErr = ServeDirWithProgress(w, r, targetPath)
+		} else {
+			serveErr = ServeFileWithProgress(w, r, targetPath)
+		}
+
+		if serveErr != nil {
+			l.Error(fmt.Sprintf("Failed to serve content: %v", serveErr))
+		}
+
+		// Shutdown after transfer
+		go func() {
+			time.Sleep(1 * time.Second) // allow buffer to flush
+			srv.TriggerShutdown()
+		}()
+	})
+
+	l.Info("Waiting for connection... (Server will close after 1 download, timeout 5m)")
+
+	// 5. Start Server with 5-minute timeout
+	return srv.Start(5 * time.Minute)
+}
+
+// ServeFileWithProgress serves a single file to the client with a real-time
+// progress bar (bytes sent, speed, ETA) shown on the host terminal.
+// It supports resumable downloads via Range headers.
+func ServeFileWithProgress(w http.ResponseWriter, r *http.Request, filePath string) error {
+	// Sanitize path to prevent traversal
+	// We assume filePath is already the intended target from the CLI, 
+	// but we should still be careful if it was passed around.
+	// Actually StartSendServer already does os.Stat(targetPath).
+	
+	info, err := os.Stat(filePath)
+	if err != nil {
+		http.Error(w, "File not found", http.StatusNotFound)
+		return fmt.Errorf("stat %q: %w", filePath, err)
+	}
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		http.Error(w, "File not found", http.StatusNotFound)
+		return fmt.Errorf("open %q: %w", filePath, err)
+	}
+	defer file.Close()
+
+	// Use a progress bar. 
+	// Note: For Range requests, the total size in the bar will be the FULL file size,
+	// but ServeContent will only read the requested range.
+	bar := progressbar.DefaultBytes(info.Size(), "Sending file")
+
+	// Set Content-Disposition to suggest a filename for download
+	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, info.Name()))
+
+	// Wrap the file in a ProgressReadSeeker to track progress
+	prs := NewProgressReadSeeker(r.Context(), file, bar)
+
+	// Use http.ServeContent to handle Range requests, modtime, and content type sniffing automatically.
+	http.ServeContent(w, r, info.Name(), info.ModTime(), prs)
+
+	fmt.Println() // newline after bar
+	return nil
+}
+
+// ServeDirWithProgress streams a directory as a ZIP archive to the client, showing
+// an indeterminate spinner progress bar on the host terminal (ZIP size is unknown upfront).
+func ServeDirWithProgress(w http.ResponseWriter, r *http.Request, dirPath string) error {
+	info, err := os.Stat(dirPath)
+	if err != nil || !info.IsDir() {
+		http.Error(w, "Directory not found", http.StatusNotFound)
+		return fmt.Errorf("stat dir %q: %w", dirPath, err)
+	}
+
+	bar := progressbar.Default(-1, "Streaming ZIP")
+
+	w.Header().Set("Content-Type", "application/zip")
+	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s.zip"`, info.Name()))
+
+	pw := NewProgressWriter(r.Context(), w, bar)
+	zipWriter := zip.NewWriter(pw)
+	defer func() {
+		zipWriter.Close()
+		fmt.Println() // newline after bar
+	}()
+
+	return filepath.Walk(dirPath, func(path string, fileInfo os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if fileInfo.IsDir() {
+			return nil
+		}
+
+		relPath, err := filepath.Rel(dirPath, path)
+		if err != nil {
+			return err
+		}
+
+		zipEntry, err := zipWriter.Create(filepath.ToSlash(relPath))
+		if err != nil {
+			return err
+		}
+
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		_, err = io.Copy(zipEntry, f)
+		return err
+	})
+}

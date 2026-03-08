@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagShare - Dropzone</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --primary: #bb86fc;
+            --text: #ffffff;
+            --text-secondary: #b3b3b3;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        #dropzone {
+            background-color: var(--surface);
+            border: 2px dashed var(--text-secondary);
+            border-radius: 12px;
+            padding: 40px 20px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #dropzone.dragover {
+            border-color: var(--primary);
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #9c68db;
+        }
+
+        .retry-btn {
+            background-color: #ff5555;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .retry-btn:hover {
+            background-color: #ff3333;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #333;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.2s;
+        }
+    </style>
+</head>
+
+<body data-secure="{{.Secure}}">
+    <div class="container">
+        <h1>MagShare Dropzone</h1>
+        <p>Drop a file below to send it to the host PC.</p>
+
+        <!-- auth piece (only if secure is true) -->
+        {{if .Secure}}
+        <div id="auth-section" style="margin-bottom: 20px;">
+            <label for="pin">Enter PIN:</label>
+            <input type="text" id="pin" maxlength="4"
+                style="padding: 8px; margin-left: 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff; width: 60px; text-align: center;">
+        </div>
+        {{end}}
+
+        <div id="dropzone">
+            <p>Drag & Drop here<br>or</p>
+            <button class="btn" onclick="document.getElementById('file-input').click()">Browse Files</button>
+            <input type="file" id="file-input">
+        </div>
+
+        <div class="progress-bar-container" id="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('file-input');
+        const statusEl = document.getElementById('status');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+
+        const isSecure = document.body.dataset.secure === 'true';
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop zone
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, () => {
+                dropzone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, () => {
+                dropzone.classList.remove('dragover');
+            }, false);
+        });
+
+        // Handle drops
+        dropzone.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files), false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+            uploadFile(files[0]); // Only handle the first file for simplicity
+        }
+
+        let pendingFile = null;
+
+        function retryUpload() {
+            if (pendingFile) {
+                uploadFile(pendingFile);
+            }
+        }
+
+        function uploadFile(file) {
+            pendingFile = file;
+            let pin = "";
+            if (isSecure) {
+                pin = document.getElementById('pin').value;
+                if (pin.length !== 4) {
+                    statusEl.innerHTML = "Please enter the complete 4-digit PIN first. <button onclick='retryUpload()' class='retry-btn'>Retry</button>";
+                    statusEl.style.color = "#ff5555";
+                    return;
+                }
+            }
+
+            const url = '/upload';
+            const formData = new FormData();
+            formData.append('file', file);
+            if (isSecure) formData.append('pin', pin);
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    progressContainer.style.display = 'block';
+                    progressBar.style.width = percent + '%';
+                    statusEl.innerText = `Uploading... ${percent}%`;
+                    statusEl.style.color = "var(--text-secondary)";
+                }
+            });
+
+            xhr.addEventListener('load', () => {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    progressBar.style.background = "#4caf50";
+                    statusEl.innerText = "Upload successful! You can close this page.";
+                    statusEl.style.color = "#4caf50";
+                    fileInput.value = ""; // reset
+                    pendingFile = null;
+                } else if (xhr.status === 401) {
+                    progressBar.style.background = "#ff5555";
+                    statusEl.innerHTML = "Error: Invalid PIN! Please check and try again. <button onclick='retryUpload()' class='retry-btn'>Retry</button>";
+                    statusEl.style.color = "#ff5555";
+                } else {
+                    progressBar.style.background = "#ff5555";
+                    statusEl.innerHTML = `Error: ${xhr.responseText} <button onclick='retryUpload()' class='retry-btn'>Retry</button>`;
+                    statusEl.style.color = "#ff5555";
+                }
+            });
+
+            xhr.addEventListener('error', () => {
+                progressBar.style.background = "#ff5555";
+                statusEl.innerHTML = "Upload failed due to a network error. <button onclick='retryUpload()' class='retry-btn'>Retry</button>";
+                statusEl.style.color = "#ff5555";
+            });
+
+            xhr.open('POST', url, true);
+            xhr.send(formData);
+        }
+    </script>
+</body>
+
+</html>

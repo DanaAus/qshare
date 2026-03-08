@@ -1,0 +1,24 @@
+{
+  "name": "magshare",
+  "version": "1.0.0",
+  "description": "Instant, frictionless file sharing across a local network with QR codes.",
+  "main": "index.js",
+  "bin": {
+    "magshare": "./bin/magshare.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "file-sharing",
+    "network",
+    "qr-code",
+    "cli",
+    "go"
+  ],
+  "author": "DanaAus",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
