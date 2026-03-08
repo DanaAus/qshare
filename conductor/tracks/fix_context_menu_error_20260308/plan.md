@@ -3,13 +3,13 @@
 This plan focuses on investigating the execution guard that blocks context menu launches and refactoring it to allow valid argument-based execution.
 
 ## Phase 1: Investigation and Guard Refactoring
-- [ ] Task: Locate and Analyze the Guard Message
-    - [ ] Grep the codebase for "This is a command line tool..." to find the exact guard logic.
-    - [ ] Analyze the conditions triggering the guard (e.g., checking if `os.Stdin` is a terminal).
-- [ ] Task: Refactor Guard Logic (TDD)
-    - [ ] Write a test case that simulates a non-interactive launch with valid arguments.
-    - [ ] Modify the guard logic to allow execution if valid subcommands or arguments are present.
-    - [ ] Verify that double-clicking the EXE still shows the guard/help if NO arguments are provided (if that is the intended behavior) or enters interactive mode.
+- [x] Task: Locate and Analyze the Guard Message
+    - [x] Grep the codebase for "This is a command line tool..." to find the exact guard logic.
+    - [x] Analyze the conditions triggering the guard (e.g., checking if `os.Stdin` is a terminal).
+- [x] Task: Refactor Guard Logic (TDD) (a564e1a)
+    - [x] Write a test case that simulates a non-interactive launch with valid arguments.
+    - [x] Modify the guard logic to allow execution if valid subcommands or arguments are present.
+    - [x] Verify that double-clicking the EXE still shows the guard/help if NO arguments are provided (if that is the intended behavior) or enters interactive mode.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Investigation and Guard Refactoring' (Protocol in workflow.md)
 
 ## Phase 2: Context Menu Compatibility
