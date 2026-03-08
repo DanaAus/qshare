@@ -127,3 +127,15 @@ func UnregisterContextMenu() error {
 	log.Info("Successfully unregistered Windows context menu.")
 	return nil
 }
+
+// IsContextMenuItemRegistered checks if the Magshare context menu is currently registered.
+func IsContextMenuItemRegistered() bool {
+	// We check for the existence of the file shell key
+	target := `Software\Classes\*\shell\Magshare`
+	key, err := registryOpenKey(registry.CURRENT_USER, target, registry.QUERY_VALUE)
+	if err != nil {
+		return false
+	}
+	key.Close()
+	return true
+}

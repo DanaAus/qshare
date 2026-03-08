@@ -42,9 +42,13 @@ var integrateCmd = &cobra.Command{
 		}
 
 		if statusFlag {
-			// Status check logic will be refined in implementation task
 			fmt.Println("Checking integration status...")
-			// For now, we just report if it's in config or try a best-effort check
+			isRegistered := workspace.IsContextMenuItemRegistered()
+			if isRegistered {
+				fmt.Println("Status: ENABLED (Magshare is in the context menu)")
+			} else {
+				fmt.Println("Status: DISABLED (Magshare is NOT in the context menu)")
+			}
 			fmt.Printf("Configured preference: %v\n", appConfig.ShellIntegration)
 			return nil
 		}

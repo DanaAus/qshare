@@ -111,6 +111,18 @@ func TestUnregisterContextMenu(t *testing.T) {
 			t.Errorf("UnregisterContextMenu() failed when keys don't exist: %v", err)
 		}
 	})
+
+	t.Run("IsContextMenuItemRegistered", func(t *testing.T) {
+		_ = UnregisterContextMenu()
+		if IsContextMenuItemRegistered() {
+			t.Error("expected false when unregistered")
+		}
+		_ = RegisterContextMenu()
+		if !IsContextMenuItemRegistered() {
+			t.Error("expected true when registered")
+		}
+		_ = UnregisterContextMenu()
+	})
 }
 
 // MockKey implements parts of registry.Key interface if needed, but registry.Key is just a handle.

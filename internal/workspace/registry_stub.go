@@ -13,3 +13,8 @@ func RegisterContextMenu() error {
 func UnregisterContextMenu() error {
 	return errors.New("context menu removal is only supported on Windows")
 }
+
+// IsContextMenuItemRegistered is a no-op stub for non-Windows platforms.
+func IsContextMenuItemRegistered() bool {
+	return false
+}
