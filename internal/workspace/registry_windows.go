@@ -37,8 +37,9 @@ func RegisterContextMenu() error {
 		return err
 	}
 
-	// Command: "C:\path\to\magshare.exe" send "%1"
-	command := fmt.Sprintf("\"%s\" send \"%%1\"", exePath)
+	// Command: "C:\path\to\magshare.exe" "%1"
+	// Passing path directly to root command triggers interactive menu with path pre-filled.
+	command := fmt.Sprintf("\"%s\" \"%%1\"", exePath)
 	const menuTitle = "Share via Magshare"
 
 	targets := []string{

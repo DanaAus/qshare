@@ -21,15 +21,21 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "MagShare",
+	Use:   "MagShare [path]",
 	Short: "MagShare is an instant local network file sharing tool",
 	Long:  `MagShare allows you to instantly share and receive files across your local network. It spawns ephemeral web servers and provides QR codes for easy access.`,
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		l := logger.WithComponent("interactive")
 
+		initialPath := appConfig.DownloadDir
+		if len(args) > 0 {
+			initialPath = args[0]
+		}
+
 		for {
 			// If no subcommand is provided, run interactive mode
-			cfg, err := ui.RunInteractivePrompts(demoMode, appConfig.Port, appConfig.DownloadDir, appConfig.SecureMode)
+			cfg, err := ui.RunInteractivePrompts(demoMode, appConfig.Port, initialPath, appConfig.SecureMode)
 			if err != nil {
 				if err.Error() == "user cancelled" {
 					return nil
@@ -40,6 +46,9 @@ var rootCmd = &cobra.Command{
 			if cfg.Action == "exit" {
 				return nil
 			}
+
+			// Clear initial path after first use so subsequent loop iterations use the last path or config
+			initialPath = cfg.Path
 
 			// Override interactive values if flags are provided (only on first loop iteration if we want to be strict, but here we just apply them)
 			if portFlag > 0 {
