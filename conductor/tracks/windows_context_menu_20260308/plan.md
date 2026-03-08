@@ -10,14 +10,14 @@ This plan follows the Test-Driven Development (TDD) workflow and includes phase 
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Scaffolding and Interface Definition' (Protocol in workflow.md) (cc1efee)
 
 ## Phase 2: Registration Logic (TDD)
-- [ ] Task: Write failing tests for `RegisterContextMenu`
-    - [ ] Create `internal/workspace/registry_windows_test.go`
-    - [ ] Implement test cases that check for key existence (mocking or using a test subkey)
-    - [ ] Run tests and verify failure
-- [ ] Task: Implement `RegisterContextMenu`
-    - [ ] Implement registry key creation for `*` and `Directory` under HKCU
-    - [ ] Implement command string construction with `os.Executable()`
-    - [ ] Run tests and verify success
+- [x] Task: Write failing tests for `RegisterContextMenu` (e4a77e0)
+    - [x] Create `internal/workspace/registry_windows_test.go`
+    - [x] Implement test cases that check for key existence (mocking or using a test subkey)
+    - [x] Run tests and verify failure
+- [x] Task: Implement `RegisterContextMenu` (1224eed)
+    - [x] Implement registry key creation for `*` and `Directory` under HKCU
+    - [x] Implement command string construction with `os.Executable()`
+    - [x] Run tests and verify success
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Registration Logic (TDD)' (Protocol in workflow.md)
 
 ## Phase 3: Unregistration Logic (TDD)
