@@ -2,7 +2,7 @@
 
 This plan focuses on enhancing the interactive mode into a persistent loop and adding Windows shortcut functionality.
 
-## Phase 1: Main Menu Loop
+## Phase 1: Main Menu Loop [checkpoint: eab6a3d]
 - [x] Task: Refactor `RunInteractivePrompts` for exit option (55f17f8)
     - [x] Add an "Exit" option to the action selection menu in `internal/ui/interactive.go`.
     - [x] Update `InteractiveConfig` to handle the "exit" action.
@@ -11,7 +11,7 @@ This plan focuses on enhancing the interactive mode into a persistent loop and a
     - [x] Wrap the `ui.RunInteractivePrompts` call in an infinite loop.
     - [x] Break the loop if the action is "exit" or if an unrecoverable error occurs.
     - [x] Log action completions and return to menu.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Main Menu Loop' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Main Menu Loop' (Protocol in workflow.md) (eab6a3d)
 
 ## Phase 2: Shortcut Creation
 - [ ] Task: Implement Windows Shortcut Logic
